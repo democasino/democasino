@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Casino Demo</title>
+    <title>NFT Casino</title>
     <style>
         * {
             margin: 0;
@@ -191,14 +191,14 @@
             </div>
             <div class="info-item">
                 <div class="label">🏅 Рейтинг</div>
-                <div class="value" id="rank">-</div>
+                <div class="value" id="rank">🏆</div>
             </div>
         </div>
         <div class="tap-area">⚡ Демо-версия. Играй и попади в ТОП-10!</div>
     </div>
-    
+
     <div class="toast" id="toast"></div>
-    
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         // ===== ТВОИ NFT КАРТИНКИ =====
@@ -213,11 +213,11 @@
             'https://i.postimg.cc/jDzWbFRP/lv-0-20260831161855.png',
             'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png',
         ];
-        
+
         // ===== НАСТРОЙКИ =====
         const BOT_TOKEN = '8992217710:AAHgdwlL6Fbvuc3J4RuvhHNO5j9n3Vuo9sY';
         const BOT_USERNAME = 'democasinotgBot';
-        
+
         // ===== КОД ИГРЫ =====
         let wins = 0,
             total = 0,
@@ -234,16 +234,16 @@
         const toast = document.getElementById('toast');
         const tg = window.Telegram.WebApp;
         tg.expand();
-        
+
         // ===== ФУНКЦИИ =====
         function getRandomNFT() {
             return nftImages[Math.floor(Math.random() * nftImages.length)];
         }
-        
+
         function renderReel(element, imageUrl) {
             element.innerHTML = `<img src="${imageUrl}" alt="NFT">`;
         }
-        
+
         function showToast(message, duration = 3000) {
             toast.textContent = message;
             toast.classList.add('show');
@@ -251,7 +251,7 @@
                 toast.classList.remove('show');
             }, duration);
         }
-        
+
         // ===== ОТПРАВКА ПОБЕДЫ БОТУ =====
         function sendWinToBot() {
             const userId = tg.initDataUnsafe?.user?.id;
@@ -259,8 +259,7 @@
                 console.log('Не удалось определить пользователя');
                 return;
             }
-            
-            // Отправляем команду /win боту через Telegram API
+
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: {
@@ -281,7 +280,7 @@
                 console.log('❌ Ошибка сети:', error);
             });
         }
-        
+
         // ===== ОТКРЫТИЕ ТОПА =====
         function openTop() {
             const userId = tg.initDataUnsafe?.user?.id;
@@ -289,8 +288,7 @@
                 showToast('❌ Не удалось определить пользователя');
                 return;
             }
-            
-            // Просто отправляем команду /top боту (он пришлёт список в чат)
+
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: {
@@ -312,14 +310,14 @@
                 console.log(error);
             });
         }
-        
+
         // ===== ОСНОВНАЯ ФУНКЦИЯ SPIN =====
         function spin() {
             if (isSpinning) return;
-            
+
             isSpinning = true;
             spinBtn.disabled = true;
-            
+
             let count = 0;
             const interval = setInterval(() => {
                 renderReel(reel1, getRandomNFT());
@@ -336,14 +334,13 @@
                     renderReel(reel3, r3);
                     total++;
                     totalSpan.textContent = total;
-                    
+
                     // ===== ПРОВЕРКА ВЫИГРЫША =====
                     if (r1 === r2 && r2 === r3) {
                         wins++;
                         winsSpan.textContent = wins;
                         resultDiv.textContent = '🎉 ДЖЕКПОТ! Три одинаковых NFT!';
                         resultDiv.className = 'result win';
-                        // ОТПРАВЛЯЕМ ПОБЕДУ БОТУ
                         sendWinToBot();
                         showToast('🏆 Победа отправлена в рейтинг!', 2000);
                     } else if (r1 === r2 || r2 === r3 || r1 === r3) {
@@ -351,29 +348,28 @@
                         winsSpan.textContent = wins;
                         resultDiv.textContent = '🔔 Два NFT совпали! Почти выиграл!';
                         resultDiv.className = 'result win';
-                        // ОТПРАВЛЯЕМ ПОБЕДУ БОТУ
                         sendWinToBot();
                         showToast('🏆 Победа отправлена в рейтинг!', 2000);
                     } else {
                         resultDiv.textContent = '😔 Ничего не совпало. Попробуй ещё!';
                         resultDiv.className = 'result lose';
                     }
-                    
+
                     isSpinning = false;
                     spinBtn.disabled = false;
                 }
             }, 80);
         }
-        
+
         // ===== СОБЫТИЯ КНОПОК =====
         spinBtn.addEventListener('click', spin);
         topBtn.addEventListener('click', openTop);
-        
+
         // ===== ПРИ ЗАГРУЗКЕ =====
         renderReel(reel1, getRandomNFT());
         renderReel(reel2, getRandomNFT());
         renderReel(reel3, getRandomNFT());
-        
+
         // Восстанавливаем статистику из localStorage
         const savedWins = localStorage.getItem('localWins');
         const savedTotal = localStorage.getItem('localTotal');
@@ -381,16 +377,16 @@
         if (savedTotal) total = parseInt(savedTotal);
         winsSpan.textContent = wins;
         totalSpan.textContent = total;
-        
+
         // Сохраняем статистику каждые 5 секунд
         setInterval(() => {
             localStorage.setItem('localWins', wins);
             localStorage.setItem('localTotal', total);
         }, 5000);
-        
-        // Устанавливаем ранг (будет обновляться из бота, пока заглушка)
+
+        // Устанавливаем ранг (заглушка)
         rankSpan.textContent = '🏆';
-        
+
         console.log('🎰 Игра загружена!');
         console.log('👤 Пользователь:', tg.initDataUnsafe?.user);
     </script>
