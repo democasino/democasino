@@ -108,9 +108,9 @@
         <p class="subtitle">Выиграй цифровое искусство</p>
         <div class="slot-machine">
             <div class="reels" id="reels">
-                <div class="reel" id="reel1"><span class="nft-placeholder">🖼️</span></div>
-                <div class="reel" id="reel2"><span class="nft-placeholder">🖼️</span></div>
-                <div class="reel" id="reel3"><span class="nft-placeholder">🖼️</span></div>
+                <div class="reel" id="reel1"></div>
+                <div class="reel" id="reel2"></div>
+                <div class="reel" id="reel3"></div>
             </div>
             <div class="result" id="result">Нажми "Крутить!"</div>
         </div>
@@ -133,7 +133,7 @@
     </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // ===== ТВОИ NFT КАРТИНКИ (уже вставлены!) =====
+        // ===== ТВОИ NFT КАРТИНКИ =====
         const nftImages = [
             'https://i.postimg.cc/K1gPgfxn/lv-0-20260831162300.png',
             'https://i.postimg.cc/87hFS0Tq/lv-0-20260831160855.png',
@@ -160,13 +160,17 @@
         tg.expand();
         
         function getRandomNFT() {
-            const randomIndex = Math.floor(Math.random() * nftImages.length);
-            return nftImages[randomIndex];
+            return nftImages[Math.floor(Math.random() * nftImages.length)];
         }
         
         function renderReel(element, imageUrl) {
             element.innerHTML = `<img src="${imageUrl}" alt="NFT">`;
         }
+        
+        // ===== ПРИ ЗАГРУЗКЕ СРАЗУ ПОКАЗЫВАЕМ КАРТИНКИ =====
+        renderReel(reel1, getRandomNFT());
+        renderReel(reel2, getRandomNFT());
+        renderReel(reel3, getRandomNFT());
         
         function spin() {
             if (isSpinning || attempts <= 0) {
@@ -228,9 +232,6 @@
         } else if (!lastReset) {
             localStorage.setItem('lastReset', now.toString());
         }
-        localStorage.setItem('attempts', attempts);
-        localStorage.setItem('wins', wins);
-        localStorage.setItem('total', total);
     </script>
 </body>
 </html>
