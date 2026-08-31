@@ -1,236 +1,456 @@
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-    // ===== ТВОИ NFT КАРТИНКИ =====
-    const nftImages = [
-        'https://i.postimg.cc/K1gPgfxn/lv-0-20260831162300.png',
-        'https://i.postimg.cc/87hFS0Tq/lv-0-20260831160855.png',
-        'https://i.postimg.cc/xXKk240n/lv-0-20260831161010.png',
-        'https://i.postimg.cc/18pgQj9x/lv-0-20260831161053.png',
-        'https://i.postimg.cc/k2xVmp7L/lv-0-20260831161146.png',
-        'https://i.postimg.cc/XrMZtb6K/lv-0-20260831162107.png',
-        'https://i.postimg.cc/21pqgDNF/lv-0-20260831161958.png',
-        'https://i.postimg.cc/jDzWbFRP/lv-0-20260831161855.png',
-        'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png',
-    ];
-
-    // ===== НАСТРОЙКИ =====
-    const BOT_TOKEN = '8992217710:AAHgdwlL6Fbvuc3J4RuvhHNO5j9n3Vuo9sY';
-    const BOT_USERNAME = 'democasinotgBot';
-
-    // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =====
-    function switchTab(tab) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-        if (tab === 'casino') {
-            document.getElementById('tabCasinoContent').classList.add('active');
-            document.getElementById('tabCasino').classList.add('active');
-        } else if (tab === 'rating') {
-            document.getElementById('tabRatingContent').classList.add('active');
-            document.getElementById('tabRating').classList.add('active');
-            loadRating();
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Casino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    }
-
-    // ===== ЗАГРУЗКА РЕЙТИНГА (ИСПРАВЛЕНО) =====
-    function loadRating() {
-        const ratingList = document.getElementById('ratingList');
-        ratingList.innerHTML = '<div class="rating-loading">⏳ Отправляем запрос...</div>';
-
-        const userId = tg.initDataUnsafe?.user?.id;
-        if (!userId) {
-            ratingList.innerHTML = '<div class="rating-empty">❌ Не удалось определить пользователя</div>';
-            return;
+        body {
+            background: linear-gradient(135deg, #0a0015, #1a0030);
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 450px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
         }
 
-        // Отправляем запрос боту
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: userId,
-                text: '/top',
-                parse_mode: 'Markdown'
-            })
-        })
-        .then(response => {
-            if (response.ok) {
-                ratingList.innerHTML = `
-                    <div class="rating-empty" style="color: #4CAF50;">
-                        ✅ Топ-10 отправлен в чат с ботом!
-                        <br><br>
-                        📱 Открой чат с @${BOT_USERNAME}
-                        <br>
-                        <small style="color:#666;">Нажми "🏆 Рейтинг" в боте, чтобы увидеть топ</small>
-                    </div>
-                `;
-                showToast('📨 Топ отправлен в чат!', 3000);
-                
-                // Открываем чат с ботом автоматически (опционально)
-                // tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
-            } else {
-                // Если бот не может отправить сообщение (например, пользователь не начинал диалог)
-                ratingList.innerHTML = `
-                    <div class="rating-empty">
-                        ⚠️ Чтобы увидеть топ, напиши боту команду /top вручную
-                        <br><br>
-                        <button onclick="tg.openTelegramLink('https://t.me/${BOT_USERNAME}')" 
-                                style="padding:12px 24px;border-radius:12px;border:none;background:#4a00e0;color:white;font-weight:bold;cursor:pointer;">
-                            📱 Открыть чат с ботом
-                        </button>
-                        <br><br>
-                        <small style="color:#666;">После открытия напиши /top</small>
-                    </div>
-                `;
-                showToast('⚠️ Напиши /top в чате с ботом', 3000);
-            }
-        })
-        .catch(error => {
-            console.log('Ошибка:', error);
-            ratingList.innerHTML = `
-                <div class="rating-empty">
-                    ❌ Ошибка соединения
-                    <br><br>
-                    <button onclick="tg.openTelegramLink('https://t.me/${BOT_USERNAME}')" 
-                            style="padding:12px 24px;border-radius:12px;border:none;background:#4a00e0;color:white;font-weight:bold;cursor:pointer;">
-                        📱 Открыть чат с ботом
-                    </button>
-                    <br><br>
-                    <small style="color:#666;">Напиши /top в чате</small>
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            background: transparent;
+            color: #888;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #ffd93d;
+            color: #ffd93d;
+        }
+        .tab-btn:active {
+            transform: scale(0.95);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .slot-machine {
+            background: #1a0030;
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        .reels {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .reel {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 15px;
+            min-width: 100px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .reel img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+        .result {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 15px;
+            min-height: 30px;
+            font-weight: bold;
+        }
+        .result.win {
+            color: #ffd93d;
+        }
+        .result.lose {
+            color: #ff6b6b;
+        }
+        .button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
+            margin-bottom: 12px;
+        }
+        .button:active {
+            transform: scale(0.95);
+        }
+        .button:disabled {
+            opacity: 0.5;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            text-align: center;
+        }
+        .info-item .label {
+            font-size: 12px;
+            color: #888;
+        }
+        .info-item .value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd93d;
+        }
+
+        .rating-list {
+            padding: 10px 0;
+        }
+        .rating-empty {
+            text-align: center;
+            color: #888;
+            padding: 30px;
+        }
+        .refresh-btn {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: transparent;
+            color: #888;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        .refresh-btn:active {
+            transform: scale(0.95);
+        }
+        .open-chat-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(45deg, #4a00e0, #8e2de2);
+            color: white;
+            margin-top: 15px;
+            box-shadow: 0 8px 25px rgba(74, 0, 224, 0.4);
+        }
+        .open-chat-btn:active {
+            transform: scale(0.95);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffd93d;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎰 NFT CASINO</h1>
+        <p class="subtitle">Выиграй цифровое искусство</p>
+
+        <div class="tabs">
+            <button class="tab-btn active" id="tabCasino" onclick="switchTab('casino')">🎰 Рулетка</button>
+            <button class="tab-btn" id="tabRating" onclick="switchTab('rating')">🏆 Рейтинг</button>
+        </div>
+
+        <!-- ===== ВКЛАДКА "РУЛЕТКА" ===== -->
+        <div class="tab-content active" id="tabCasinoContent">
+            <div class="slot-machine">
+                <div class="reels" id="reels">
+                    <div class="reel" id="reel1"></div>
+                    <div class="reel" id="reel2"></div>
+                    <div class="reel" id="reel3"></div>
                 </div>
-            `;
-        });
-    }
+                <div class="result" id="result">Нажми "Крутить!"</div>
+            </div>
+            <button class="button" id="spinBtn">🎰 Крутить!</button>
+            <div class="info">
+                <div class="info-item">
+                    <div class="label">🎯 Выигрыши</div>
+                    <div class="value" id="wins">0</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">🎮 Всего игр</div>
+                    <div class="value" id="total">0</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">🏅 Место</div>
+                    <div class="value" id="rank">-</div>
+                </div>
+            </div>
+        </div>
 
-    // ===== КОД РУЛЕТКИ =====
-    let wins = 0, total = 0, isSpinning = false;
-    const reel1 = document.getElementById('reel1');
-    const reel2 = document.getElementById('reel2');
-    const reel3 = document.getElementById('reel3');
-    const resultDiv = document.getElementById('result');
-    const spinBtn = document.getElementById('spinBtn');
-    const winsSpan = document.getElementById('wins');
-    const totalSpan = document.getElementById('total');
-    const rankSpan = document.getElementById('rank');
-    const toast = document.getElementById('toast');
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+        <!-- ===== ВКЛАДКА "РЕЙТИНГ" ===== -->
+        <div class="tab-content" id="tabRatingContent">
+            <div class="rating-list" id="ratingList">
+                <div class="rating-empty">
+                    📊 Для просмотра рейтинга нажми кнопку ниже
+                </div>
+            </div>
+            <button class="open-chat-btn" onclick="openBotChat()">
+                📱 Открыть чат с ботом
+            </button>
+            <div style="text-align:center;color:#555;font-size:12px;margin-top:12px;">
+                После открытия чата напиши команду /top
+            </div>
+        </div>
 
-    function getRandomNFT() {
-        return nftImages[Math.floor(Math.random() * nftImages.length)];
-    }
+        <div class="tap-area" style="margin-top:15px;text-align:center;color:#555;font-size:12px;">
+            ⚡ Демо-версия. Играй и попади в ТОП-10!
+        </div>
+    </div>
 
-    function renderReel(element, imageUrl) {
-        element.innerHTML = `<img src="${imageUrl}" alt="NFT">`;
-    }
+    <div class="toast" id="toast"></div>
 
-    function showToast(message, duration = 3000) {
-        toast.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, duration);
-    }
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        // ===== ТВОИ NFT КАРТИНКИ =====
+        const nftImages = [
+            'https://i.postimg.cc/K1gPgfxn/lv-0-20260831162300.png',
+            'https://i.postimg.cc/87hFS0Tq/lv-0-20260831160855.png',
+            'https://i.postimg.cc/xXKk240n/lv-0-20260831161010.png',
+            'https://i.postimg.cc/18pgQj9x/lv-0-20260831161053.png',
+            'https://i.postimg.cc/k2xVmp7L/lv-0-20260831161146.png',
+            'https://i.postimg.cc/XrMZtb6K/lv-0-20260831162107.png',
+            'https://i.postimg.cc/21pqgDNF/lv-0-20260831161958.png',
+            'https://i.postimg.cc/jDzWbFRP/lv-0-20260831161855.png',
+            'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png',
+        ];
 
-    function sendWinToBot() {
-        const userId = tg.initDataUnsafe?.user?.id;
-        if (!userId) {
-            console.log('Не удалось определить пользователя');
-            return;
+        // ===== НАСТРОЙКИ =====
+        const BOT_TOKEN = '8992217710:AAHgdwlL6Fbvuc3J4RuvhHNO5j9n3Vuo9sY';
+        const BOT_USERNAME = 'democasinotgBot';
+
+        // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =====
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            if (tab === 'casino') {
+                document.getElementById('tabCasinoContent').classList.add('active');
+                document.getElementById('tabCasino').classList.add('active');
+            } else if (tab === 'rating') {
+                document.getElementById('tabRatingContent').classList.add('active');
+                document.getElementById('tabRating').classList.add('active');
+            }
         }
 
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: userId,
-                text: '/win',
-                parse_mode: 'Markdown'
-            })
-        }).then(response => {
-            if (response.ok) {
-                console.log('✅ Победа отправлена боту!');
-            } else {
-                console.log('⚠️ Ошибка при отправке победы');
+        // ===== ОТКРЫТИЕ ЧАТА С БОТОМ =====
+        function openBotChat() {
+            const tg = window.Telegram.WebApp;
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
+            showToast('📱 Открываем чат с ботом...', 2000);
+        }
+
+        // ===== КОД РУЛЕТКИ =====
+        let wins = 0,
+            total = 0,
+            isSpinning = false;
+        const reel1 = document.getElementById('reel1');
+        const reel2 = document.getElementById('reel2');
+        const reel3 = document.getElementById('reel3');
+        const resultDiv = document.getElementById('result');
+        const spinBtn = document.getElementById('spinBtn');
+        const winsSpan = document.getElementById('wins');
+        const totalSpan = document.getElementById('total');
+        const rankSpan = document.getElementById('rank');
+        const toast = document.getElementById('toast');
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function getRandomNFT() {
+            return nftImages[Math.floor(Math.random() * nftImages.length)];
+        }
+
+        function renderReel(element, imageUrl) {
+            element.innerHTML = `<img src="${imageUrl}" alt="NFT">`;
+        }
+
+        function showToast(message, duration = 3000) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        function sendWinToBot() {
+            const userId = tg.initDataUnsafe?.user?.id;
+            if (!userId) {
+                console.log('Не удалось определить пользователя');
+                return;
             }
-        }).catch(error => {
-            console.log('❌ Ошибка сети:', error);
-        });
-    }
 
-    function spin() {
-        if (isSpinning) return;
-
-        isSpinning = true;
-        spinBtn.disabled = true;
-
-        let count = 0;
-        const interval = setInterval(() => {
-            renderReel(reel1, getRandomNFT());
-            renderReel(reel2, getRandomNFT());
-            renderReel(reel3, getRandomNFT());
-            count++;
-            if (count > 20) {
-                clearInterval(interval);
-                const r1 = getRandomNFT();
-                const r2 = getRandomNFT();
-                const r3 = getRandomNFT();
-                renderReel(reel1, r1);
-                renderReel(reel2, r2);
-                renderReel(reel3, r3);
-                total++;
-                totalSpan.textContent = total;
-
-                if (r1 === r2 && r2 === r3) {
-                    wins++;
-                    winsSpan.textContent = wins;
-                    resultDiv.textContent = '🎉 ДЖЕКПОТ! Три одинаковых NFT!';
-                    resultDiv.className = 'result win';
-                    sendWinToBot();
-                    showToast('🏆 Победа отправлена в рейтинг!', 2000);
-                } else if (r1 === r2 || r2 === r3 || r1 === r3) {
-                    wins++;
-                    winsSpan.textContent = wins;
-                    resultDiv.textContent = '🔔 Два NFT совпали! Почти выиграл!';
-                    resultDiv.className = 'result win';
-                    sendWinToBot();
-                    showToast('🏆 Победа отправлена в рейтинг!', 2000);
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: userId,
+                    text: '/win',
+                    parse_mode: 'Markdown'
+                })
+            }).then(response => {
+                if (response.ok) {
+                    console.log('✅ Победа отправлена боту!');
                 } else {
-                    resultDiv.textContent = '😔 Ничего не совпало. Попробуй ещё!';
-                    resultDiv.className = 'result lose';
+                    console.log('⚠️ Ошибка при отправке победы');
                 }
+            }).catch(error => {
+                console.log('❌ Ошибка сети:', error);
+            });
+        }
 
-                isSpinning = false;
-                spinBtn.disabled = false;
-            }
-        }, 80);
-    }
+        function spin() {
+            if (isSpinning) return;
 
-    spinBtn.addEventListener('click', spin);
+            isSpinning = true;
+            spinBtn.disabled = true;
 
-    // ===== ПРИ ЗАГРУЗКЕ =====
-    renderReel(reel1, getRandomNFT());
-    renderReel(reel2, getRandomNFT());
-    renderReel(reel3, getRandomNFT());
+            let count = 0;
+            const interval = setInterval(() => {
+                renderReel(reel1, getRandomNFT());
+                renderReel(reel2, getRandomNFT());
+                renderReel(reel3, getRandomNFT());
+                count++;
+                if (count > 20) {
+                    clearInterval(interval);
+                    const r1 = getRandomNFT();
+                    const r2 = getRandomNFT();
+                    const r3 = getRandomNFT();
+                    renderReel(reel1, r1);
+                    renderReel(reel2, r2);
+                    renderReel(reel3, r3);
+                    total++;
+                    totalSpan.textContent = total;
 
-    const savedWins = localStorage.getItem('localWins');
-    const savedTotal = localStorage.getItem('localTotal');
-    if (savedWins) wins = parseInt(savedWins);
-    if (savedTotal) total = parseInt(savedTotal);
-    winsSpan.textContent = wins;
-    totalSpan.textContent = total;
+                    if (r1 === r2 && r2 === r3) {
+                        wins++;
+                        winsSpan.textContent = wins;
+                        resultDiv.textContent = '🎉 ДЖЕКПОТ! Три одинаковых NFT!';
+                        resultDiv.className = 'result win';
+                        sendWinToBot();
+                        showToast('🏆 Победа отправлена в рейтинг!', 2000);
+                    } else if (r1 === r2 || r2 === r3 || r1 === r3) {
+                        wins++;
+                        winsSpan.textContent = wins;
+                        resultDiv.textContent = '🔔 Два NFT совпали! Почти выиграл!';
+                        resultDiv.className = 'result win';
+                        sendWinToBot();
+                        showToast('🏆 Победа отправлена в рейтинг!', 2000);
+                    } else {
+                        resultDiv.textContent = '😔 Ничего не совпало. Попробуй ещё!';
+                        resultDiv.className = 'result lose';
+                    }
 
-    setInterval(() => {
-        localStorage.setItem('localWins', wins);
-        localStorage.setItem('localTotal', total);
-    }, 5000);
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                }
+            }, 80);
+        }
 
-    rankSpan.textContent = '🏆';
+        spinBtn.addEventListener('click', spin);
 
-    console.log('🎰 Игра загружена!');
-    console.log('👤 Пользователь:', tg.initDataUnsafe?.user);
-</script>
+        // ===== ПРИ ЗАГРУЗКЕ =====
+        renderReel(reel1, getRandomNFT());
+        renderReel(reel2, getRandomNFT());
+        renderReel(reel3, getRandomNFT());
+
+        const savedWins = localStorage.getItem('localWins');
+        const savedTotal = localStorage.getItem('localTotal');
+        if (savedWins) wins = parseInt(savedWins);
+        if (savedTotal) total = parseInt(savedTotal);
+        winsSpan.textContent = wins;
+        totalSpan.textContent = total;
+
+        setInterval(() => {
+            localStorage.setItem('localWins', wins);
+            localStorage.setItem('localTotal', total);
+        }, 5000);
+
+        rankSpan.textContent = '🏆';
+
+        console.log('🎰 Игра загружена!');
+        console.log('👤 Пользователь:', tg.initDataUnsafe?.user);
+    </script>
+</body>
+</html>
