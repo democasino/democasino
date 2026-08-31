@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFT Casino Demo</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             background: linear-gradient(135deg, #0a0015, #1a0030);
             font-family: Arial, sans-serif;
@@ -17,13 +21,13 @@
             padding: 20px;
         }
         .container {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 30px;
             max-width: 400px;
             width: 100%;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         h1 {
             text-align: center;
@@ -33,13 +37,18 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 30px; }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
         .slot-machine {
             background: #1a0030;
             border-radius: 20px;
             padding: 30px 20px;
             margin-bottom: 30px;
-            border: 2px solid rgba(255,215,0,0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
         }
         .reels {
             display: flex;
@@ -48,7 +57,7 @@
             padding: 20px 0;
         }
         .reel {
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             padding: 10px;
             border-radius: 15px;
             min-width: 100px;
@@ -56,7 +65,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
         .reel img {
             width: 80px;
@@ -71,8 +80,12 @@
             min-height: 30px;
             font-weight: bold;
         }
-        .result.win { color: #ffd93d; }
-        .result.lose { color: #ff6b6b; }
+        .result.win {
+            color: #ffd93d;
+        }
+        .result.lose {
+            color: #ff6b6b;
+        }
         .button {
             width: 100%;
             padding: 18px;
@@ -86,20 +99,69 @@
             box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
             margin-bottom: 12px;
         }
-        .button:active { transform: scale(0.95); }
-        .button:disabled { opacity: 0.5; }
+        .button:active {
+            transform: scale(0.95);
+        }
+        .button:disabled {
+            opacity: 0.5;
+        }
         .info {
             display: flex;
             justify-content: space-between;
             padding: 15px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
             margin-top: 15px;
         }
-        .info-item { text-align: center; }
-        .info-item .label { font-size: 12px; color: #888; }
-        .info-item .value { font-size: 22px; font-weight: bold; color: #ffd93d; }
-        .tap-area { margin-top: 20px; text-align: center; color: #555; font-size: 12px; }
+        .info-item {
+            text-align: center;
+        }
+        .info-item .label {
+            font-size: 12px;
+            color: #888;
+        }
+        .info-item .value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd93d;
+        }
+        .tap-area {
+            margin-top: 20px;
+            text-align: center;
+            color: #555;
+            font-size: 12px;
+        }
+        .top-btn {
+            background: linear-gradient(45deg, #4a00e0, #8e2de2);
+            box-shadow: 0 8px 25px rgba(74, 0, 224, 0.4);
+        }
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-container .button {
+            flex: 1;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffd93d;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .toast.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -114,7 +176,10 @@
             </div>
             <div class="result" id="result">Нажми "Крутить!"</div>
         </div>
-        <button class="button" id="spinBtn">🎰 Крутить!</button>
+        <div class="btn-container">
+            <button class="button" id="spinBtn">🎰 Крутить!</button>
+            <button class="button top-btn" id="topBtn">🏆 Топ</button>
+        </div>
         <div class="info">
             <div class="info-item">
                 <div class="label">🎯 Выигрыши</div>
@@ -124,9 +189,16 @@
                 <div class="label">🎮 Всего игр</div>
                 <div class="value" id="total">0</div>
             </div>
+            <div class="info-item">
+                <div class="label">🏅 Рейтинг</div>
+                <div class="value" id="rank">-</div>
+            </div>
         </div>
-        <div class="tap-area">⚡ Демо-версия. Играй сколько хочешь!</div>
+        <div class="tap-area">⚡ Демо-версия. Играй и попади в ТОП-10!</div>
     </div>
+    
+    <div class="toast" id="toast"></div>
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         // ===== ТВОИ NFT КАРТИНКИ =====
@@ -142,18 +214,28 @@
             'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png',
         ];
         
-        // ===== КОД ИГРЫ (БЕЗ ЛИМИТА ПОПЫТОК) =====
-        let wins = 0, total = 0, isSpinning = false;
+        // ===== НАСТРОЙКИ =====
+        const BOT_TOKEN = '8992217710:AAHgdwlL6Fbvuc3J4RuvhHNO5j9n3Vuo9sY';
+        const BOT_USERNAME = 'democasinotgBot';
+        
+        // ===== КОД ИГРЫ =====
+        let wins = 0,
+            total = 0,
+            isSpinning = false;
         const reel1 = document.getElementById('reel1');
         const reel2 = document.getElementById('reel2');
         const reel3 = document.getElementById('reel3');
         const resultDiv = document.getElementById('result');
         const spinBtn = document.getElementById('spinBtn');
+        const topBtn = document.getElementById('topBtn');
         const winsSpan = document.getElementById('wins');
         const totalSpan = document.getElementById('total');
+        const rankSpan = document.getElementById('rank');
+        const toast = document.getElementById('toast');
         const tg = window.Telegram.WebApp;
         tg.expand();
         
+        // ===== ФУНКЦИИ =====
         function getRandomNFT() {
             return nftImages[Math.floor(Math.random() * nftImages.length)];
         }
@@ -162,11 +244,76 @@
             element.innerHTML = `<img src="${imageUrl}" alt="NFT">`;
         }
         
-        // Показываем случайные картинки при загрузке
-        renderReel(reel1, getRandomNFT());
-        renderReel(reel2, getRandomNFT());
-        renderReel(reel3, getRandomNFT());
+        function showToast(message, duration = 3000) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
         
+        // ===== ОТПРАВКА ПОБЕДЫ БОТУ =====
+        function sendWinToBot() {
+            const userId = tg.initDataUnsafe?.user?.id;
+            if (!userId) {
+                console.log('Не удалось определить пользователя');
+                return;
+            }
+            
+            // Отправляем команду /win боту через Telegram API
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: userId,
+                    text: '/win',
+                    parse_mode: 'Markdown'
+                })
+            }).then(response => {
+                if (response.ok) {
+                    console.log('✅ Победа отправлена боту!');
+                } else {
+                    console.log('⚠️ Ошибка при отправке победы');
+                }
+            }).catch(error => {
+                console.log('❌ Ошибка сети:', error);
+            });
+        }
+        
+        // ===== ОТКРЫТИЕ ТОПА =====
+        function openTop() {
+            const userId = tg.initDataUnsafe?.user?.id;
+            if (!userId) {
+                showToast('❌ Не удалось определить пользователя');
+                return;
+            }
+            
+            // Просто отправляем команду /top боту (он пришлёт список в чат)
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: userId,
+                    text: '/top',
+                    parse_mode: 'Markdown'
+                })
+            }).then(response => {
+                if (response.ok) {
+                    showToast('🏆 Топ отправлен в чат!');
+                } else {
+                    showToast('❌ Ошибка при открытии топа');
+                }
+            }).catch(error => {
+                showToast('❌ Ошибка сети');
+                console.log(error);
+            });
+        }
+        
+        // ===== ОСНОВНАЯ ФУНКЦИЯ SPIN =====
         function spin() {
             if (isSpinning) return;
             
@@ -190,25 +337,62 @@
                     total++;
                     totalSpan.textContent = total;
                     
+                    // ===== ПРОВЕРКА ВЫИГРЫША =====
                     if (r1 === r2 && r2 === r3) {
                         wins++;
                         winsSpan.textContent = wins;
                         resultDiv.textContent = '🎉 ДЖЕКПОТ! Три одинаковых NFT!';
                         resultDiv.className = 'result win';
+                        // ОТПРАВЛЯЕМ ПОБЕДУ БОТУ
+                        sendWinToBot();
+                        showToast('🏆 Победа отправлена в рейтинг!', 2000);
                     } else if (r1 === r2 || r2 === r3 || r1 === r3) {
+                        wins++;
+                        winsSpan.textContent = wins;
                         resultDiv.textContent = '🔔 Два NFT совпали! Почти выиграл!';
                         resultDiv.className = 'result win';
+                        // ОТПРАВЛЯЕМ ПОБЕДУ БОТУ
+                        sendWinToBot();
+                        showToast('🏆 Победа отправлена в рейтинг!', 2000);
                     } else {
                         resultDiv.textContent = '😔 Ничего не совпало. Попробуй ещё!';
                         resultDiv.className = 'result lose';
                     }
+                    
                     isSpinning = false;
                     spinBtn.disabled = false;
                 }
             }, 80);
         }
         
+        // ===== СОБЫТИЯ КНОПОК =====
         spinBtn.addEventListener('click', spin);
+        topBtn.addEventListener('click', openTop);
+        
+        // ===== ПРИ ЗАГРУЗКЕ =====
+        renderReel(reel1, getRandomNFT());
+        renderReel(reel2, getRandomNFT());
+        renderReel(reel3, getRandomNFT());
+        
+        // Восстанавливаем статистику из localStorage
+        const savedWins = localStorage.getItem('localWins');
+        const savedTotal = localStorage.getItem('localTotal');
+        if (savedWins) wins = parseInt(savedWins);
+        if (savedTotal) total = parseInt(savedTotal);
+        winsSpan.textContent = wins;
+        totalSpan.textContent = total;
+        
+        // Сохраняем статистику каждые 5 секунд
+        setInterval(() => {
+            localStorage.setItem('localWins', wins);
+            localStorage.setItem('localTotal', total);
+        }, 5000);
+        
+        // Устанавливаем ранг (будет обновляться из бота, пока заглушка)
+        rankSpan.textContent = '🏆';
+        
+        console.log('🎰 Игра загружена!');
+        console.log('👤 Пользователь:', tg.initDataUnsafe?.user);
     </script>
 </body>
 </html>
