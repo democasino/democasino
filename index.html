@@ -146,6 +146,88 @@
             color: #555;
             font-size: 12px;
         }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: linear-gradient(145deg, #1a0a2e, #2d1b4e);
+            border-radius: 30px;
+            padding: 35px 25px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd93d, #ff6b6b, #8e2de2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        .modal-text {
+            text-align: center;
+            color: #ccc;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ffd93d, #f7971e);
+            color: #1a0030;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            margin-bottom: 10px;
+        }
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+        .modal-close-btn {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            background: transparent;
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .modal-close-btn:active {
+            transform: scale(0.95);
+        }
         .toast {
             position: fixed;
             bottom: 30px;
@@ -202,6 +284,21 @@
         <div class="tap-area">⚡ Демо-версия. Играй и получай удовольствие!</div>
     </div>
 
+    <!-- ===== МОДАЛЬНОЕ ОКНО ПОДДЕРЖКИ (ВНУТРИ ИГРЫ) ===== -->
+    <div class="modal-overlay" id="supportModal">
+        <div class="modal">
+            <div class="modal-title">❤️ ПОДДЕРЖКА АВТОРА</div>
+            <div class="modal-text">
+                Привет! Я разработчик этого бота 🎰<br><br>
+                Если тебе нравится игра, ты можешь поддержать меня, отправив подарок за звёзды ✨<br><br>
+                Или просто напиши слова поддержки — мне будет приятно! ❤️<br><br>
+                👉 <b>Мой юзернейм:</b> @bpsux
+            </div>
+            <button class="modal-btn" id="sendGiftBtn">🎁 Отправить подарок</button>
+            <button class="modal-close-btn" id="closeModalBtn">Закрыть</button>
+        </div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -235,6 +332,11 @@
         const rankSpan = document.getElementById('rank');
         const toast = document.getElementById('toast');
         const tg = window.Telegram.WebApp;
+
+        // Модальное окно
+        const modal = document.getElementById('supportModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const sendGiftBtn = document.getElementById('sendGiftBtn');
 
         tg.expand();
 
@@ -275,15 +377,22 @@
                 showToast('❌ Не удалось определить пользователя');
                 return;
             }
-            // Открываем чат с ботом
             tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
             showToast('📱 Открываем чат с ботом... Напиши /top', 3000);
         }
 
-        // ===== КНОПКА "ПОДДЕРЖКА" =====
+        // ===== КНОПКА "ПОДДЕРЖКА" (ОТКРЫВАЕТ МОДАЛЬНОЕ ОКНО) =====
         function openSupport() {
-            // Открываем чат с автором
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function sendGift() {
             tg.openTelegramLink(`https://t.me/${DEVELOPER_USERNAME}`);
+            closeModal();
             showToast('📱 Открываем чат с автором...', 2000);
         }
 
@@ -334,10 +443,21 @@
             }, 80);
         }
 
+        // ===== СОБЫТИЯ =====
         spinBtn.addEventListener('click', spin);
         ratingBtn.addEventListener('click', openRating);
         supportBtn.addEventListener('click', openSupport);
+        closeModalBtn.addEventListener('click', closeModal);
+        sendGiftBtn.addEventListener('click', sendGift);
 
+        // Закрытие по клику на фон
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // ===== ПРИ ЗАГРУЗКЕ =====
         renderReel(reel1, getRandomNFT());
         renderReel(reel2, getRandomNFT());
         renderReel(reel3, getRandomNFT());
