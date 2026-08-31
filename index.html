@@ -275,13 +275,14 @@
                 showToast('❌ Не удалось определить пользователя');
                 return;
             }
-            // Открываем чат с ботом и отправляем команду /top
-            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=top`);
-            showToast('📱 Открываем чат с ботом...', 2000);
+            // Открываем чат с ботом
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
+            showToast('📱 Открываем чат с ботом... Напиши /top', 3000);
         }
 
         // ===== КНОПКА "ПОДДЕРЖКА" =====
         function openSupport() {
+            // Открываем чат с автором
             tg.openTelegramLink(`https://t.me/${DEVELOPER_USERNAME}`);
             showToast('📱 Открываем чат с автором...', 2000);
         }
