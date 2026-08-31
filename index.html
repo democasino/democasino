@@ -117,19 +117,15 @@
         <button class="button" id="spinBtn">🎰 Крутить!</button>
         <div class="info">
             <div class="info-item">
-                <div class="label">Попытки</div>
-                <div class="value" id="attempts">5</div>
-            </div>
-            <div class="info-item">
-                <div class="label">Выигрыши</div>
+                <div class="label">🎯 Выигрыши</div>
                 <div class="value" id="wins">0</div>
             </div>
             <div class="info-item">
-                <div class="label">Всего игр</div>
+                <div class="label">🎮 Всего игр</div>
                 <div class="value" id="total">0</div>
             </div>
         </div>
-        <div class="tap-area">⚡ Демо-версия. Без реальных призов</div>
+        <div class="tap-area">⚡ Демо-версия. Играй сколько хочешь!</div>
     </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
@@ -146,14 +142,13 @@
             'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png',
         ];
         
-        // ===== КОД ИГРЫ =====
-        let attempts = 5, wins = 0, total = 0, isSpinning = false;
+        // ===== КОД ИГРЫ (БЕЗ ЛИМИТА ПОПЫТОК) =====
+        let wins = 0, total = 0, isSpinning = false;
         const reel1 = document.getElementById('reel1');
         const reel2 = document.getElementById('reel2');
         const reel3 = document.getElementById('reel3');
         const resultDiv = document.getElementById('result');
         const spinBtn = document.getElementById('spinBtn');
-        const attemptsSpan = document.getElementById('attempts');
         const winsSpan = document.getElementById('wins');
         const totalSpan = document.getElementById('total');
         const tg = window.Telegram.WebApp;
@@ -167,23 +162,16 @@
             element.innerHTML = `<img src="${imageUrl}" alt="NFT">`;
         }
         
-        // ===== ПРИ ЗАГРУЗКЕ СРАЗУ ПОКАЗЫВАЕМ КАРТИНКИ =====
+        // Показываем случайные картинки при загрузке
         renderReel(reel1, getRandomNFT());
         renderReel(reel2, getRandomNFT());
         renderReel(reel3, getRandomNFT());
         
         function spin() {
-            if (isSpinning || attempts <= 0) {
-                if (attempts <= 0) {
-                    resultDiv.textContent = '❌ Попытки кончились! Завтра обновятся';
-                    resultDiv.className = 'result lose';
-                }
-                return;
-            }
+            if (isSpinning) return;
+            
             isSpinning = true;
             spinBtn.disabled = true;
-            attempts--;
-            attemptsSpan.textContent = attempts;
             
             let count = 0;
             const interval = setInterval(() => {
@@ -221,17 +209,6 @@
         }
         
         spinBtn.addEventListener('click', spin);
-        
-        // Восстановление попыток
-        const lastReset = localStorage.getItem('lastReset');
-        const now = Date.now();
-        if (lastReset && (now - parseInt(lastReset)) > 86400000) {
-            attempts = 5;
-            localStorage.setItem('lastReset', now.toString());
-            attemptsSpan.textContent = attempts;
-        } else if (!lastReset) {
-            localStorage.setItem('lastReset', now.toString());
-        }
     </script>
 </body>
 </html>
