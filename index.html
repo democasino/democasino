@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Casino</title>
+    <title>NFT Casino Demo</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: linear-gradient(135deg, #0a0015, #1a0030);
             font-family: Arial, sans-serif;
@@ -28,7 +24,6 @@
             max-width: 400px;
             width: 100%;
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
         }
         h1 {
             text-align: center;
@@ -38,12 +33,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .subtitle {
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
+        .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 30px; }
         .slot-machine {
             background: #1a0030;
             border-radius: 20px;
@@ -55,24 +45,24 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            font-size: 64px;
             padding: 20px 0;
         }
         .reel {
             background: rgba(0,0,0,0.5);
-            padding: 10px 20px;
+            padding: 10px;
             border-radius: 15px;
-            min-width: 80px;
-            text-align: center;
+            min-width: 100px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 2px solid rgba(255,255,255,0.1);
-            transition: all 0.3s;
         }
-        .reel.spinning {
-            animation: spin 0.1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .reel img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 10px;
         }
         .result {
             text-align: center;
@@ -81,12 +71,8 @@
             min-height: 30px;
             font-weight: bold;
         }
-        .result.win {
-            color: #ffd93d;
-        }
-        .result.lose {
-            color: #ff6b6b;
-        }
+        .result.win { color: #ffd93d; }
+        .result.lose { color: #ff6b6b; }
         .button {
             width: 100%;
             padding: 18px;
@@ -95,19 +81,13 @@
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 12px;
             background: linear-gradient(45deg, #ff6b6b, #ee5a24);
             color: white;
             box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
+            margin-bottom: 12px;
         }
-        .button:active {
-            transform: scale(0.95);
-        }
-        .button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .button:active { transform: scale(0.95); }
+        .button:disabled { opacity: 0.5; }
         .info {
             display: flex;
             justify-content: space-between;
@@ -116,42 +96,25 @@
             border-radius: 15px;
             margin-top: 15px;
         }
-        .info-item {
-            text-align: center;
-        }
-        .info-item .label {
-            font-size: 12px;
-            color: #888;
-        }
-        .info-item .value {
-            font-size: 22px;
-            font-weight: bold;
-            color: #ffd93d;
-        }
-        .tap-area {
-            margin-top: 20px;
-            text-align: center;
-            color: #555;
-            font-size: 12px;
-        }
+        .info-item { text-align: center; }
+        .info-item .label { font-size: 12px; color: #888; }
+        .info-item .value { font-size: 22px; font-weight: bold; color: #ffd93d; }
+        .tap-area { margin-top: 20px; text-align: center; color: #555; font-size: 12px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎰 DEMO CASINO</h1>
-        <p class="subtitle">Только для развлечения</p>
-        
+        <h1>🎰 NFT CASINO</h1>
+        <p class="subtitle">Выиграй цифровое искусство</p>
         <div class="slot-machine">
             <div class="reels" id="reels">
-                <div class="reel" id="reel1">🍒</div>
-                <div class="reel" id="reel2">🍋</div>
-                <div class="reel" id="reel3">🍊</div>
+                <div class="reel" id="reel1"><span class="nft-placeholder">🖼️</span></div>
+                <div class="reel" id="reel2"><span class="nft-placeholder">🖼️</span></div>
+                <div class="reel" id="reel3"><span class="nft-placeholder">🖼️</span></div>
             </div>
             <div class="result" id="result">Нажми "Крутить!"</div>
         </div>
-        
         <button class="button" id="spinBtn">🎰 Крутить!</button>
-        
         <div class="info">
             <div class="info-item">
                 <div class="label">Попытки</div>
@@ -166,20 +129,25 @@
                 <div class="value" id="total">0</div>
             </div>
         </div>
-        
-        <div class="tap-area">
-            ⚡ Демо-версия. Без реальных призов
-        </div>
+        <div class="tap-area">⚡ Демо-версия. Без реальных призов</div>
     </div>
-    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        const emojis = ['🍒', '🍋', '🍊', '🍇', '💎', '7️⃣', '🔔', '⭐'];
-        let attempts = 5;
-        let wins = 0;
-        let total = 0;
-        let isSpinning = false;
+        // ===== ТВОИ NFT КАРТИНКИ (уже вставлены!) =====
+        const nftImages = [
+            'https://i.postimg.cc/K1gPgfxn/lv-0-20260831162300.png',
+            'https://i.postimg.cc/87hFS0Tq/lv-0-20260831160855.png',
+            'https://i.postimg.cc/xXKk240n/lv-0-20260831161010.png',
+            'https://i.postimg.cc/18pgQj9x/lv-0-20260831161053.png',
+            'https://i.postimg.cc/k2xVmp7L/lv-0-20260831161146.png',
+            'https://i.postimg.cc/XrMZtb6K/lv-0-20260831162107.png',
+            'https://i.postimg.cc/21pqgDNF/lv-0-20260831161958.png',
+            'https://i.postimg.cc/jDzWbFRP/lv-0-20260831161855.png',
+            'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png',
+        ];
         
+        // ===== КОД ИГРЫ =====
+        let attempts = 5, wins = 0, total = 0, isSpinning = false;
         const reel1 = document.getElementById('reel1');
         const reel2 = document.getElementById('reel2');
         const reel3 = document.getElementById('reel3');
@@ -188,63 +156,60 @@
         const attemptsSpan = document.getElementById('attempts');
         const winsSpan = document.getElementById('wins');
         const totalSpan = document.getElementById('total');
-        
-        // Инициализация Telegram Web App
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Открываем на весь экран
+        tg.expand();
         
-        function getRandomEmoji() {
-            return emojis[Math.floor(Math.random() * emojis.length)];
+        function getRandomNFT() {
+            const randomIndex = Math.floor(Math.random() * nftImages.length);
+            return nftImages[randomIndex];
+        }
+        
+        function renderReel(element, imageUrl) {
+            element.innerHTML = `<img src="${imageUrl}" alt="NFT">`;
         }
         
         function spin() {
-            if (isSpinning) return;
-            if (attempts <= 0) {
-                resultDiv.textContent = '❌ Попытки кончились! Завтра обновятся';
-                resultDiv.className = 'result lose';
+            if (isSpinning || attempts <= 0) {
+                if (attempts <= 0) {
+                    resultDiv.textContent = '❌ Попытки кончились! Завтра обновятся';
+                    resultDiv.className = 'result lose';
+                }
                 return;
             }
-            
             isSpinning = true;
             spinBtn.disabled = true;
             attempts--;
             attemptsSpan.textContent = attempts;
             
-            // Анимация вращения
             let count = 0;
             const interval = setInterval(() => {
-                reel1.textContent = getRandomEmoji();
-                reel2.textContent = getRandomEmoji();
-                reel3.textContent = getRandomEmoji();
+                renderReel(reel1, getRandomNFT());
+                renderReel(reel2, getRandomNFT());
+                renderReel(reel3, getRandomNFT());
                 count++;
                 if (count > 20) {
                     clearInterval(interval);
-                    // Финальный результат
-                    const result1 = getRandomEmoji();
-                    const result2 = getRandomEmoji();
-                    const result3 = getRandomEmoji();
-                    
-                    reel1.textContent = result1;
-                    reel2.textContent = result2;
-                    reel3.textContent = result3;
-                    
+                    const r1 = getRandomNFT();
+                    const r2 = getRandomNFT();
+                    const r3 = getRandomNFT();
+                    renderReel(reel1, r1);
+                    renderReel(reel2, r2);
+                    renderReel(reel3, r3);
                     total++;
                     totalSpan.textContent = total;
                     
-                    // Проверка выигрыша
-                    if (result1 === result2 && result2 === result3) {
+                    if (r1 === r2 && r2 === r3) {
                         wins++;
                         winsSpan.textContent = wins;
-                        resultDiv.textContent = '🎉 ДЖЕКПОТ! Три одинаковых!';
+                        resultDiv.textContent = '🎉 ДЖЕКПОТ! Три одинаковых NFT!';
                         resultDiv.className = 'result win';
-                    } else if (result1 === result2 || result2 === result3 || result1 === result3) {
-                        resultDiv.textContent = '🔔 Два совпали! Почти выиграл!';
+                    } else if (r1 === r2 || r2 === r3 || r1 === r3) {
+                        resultDiv.textContent = '🔔 Два NFT совпали! Почти выиграл!';
                         resultDiv.className = 'result win';
                     } else {
                         resultDiv.textContent = '😔 Ничего не совпало. Попробуй ещё!';
                         resultDiv.className = 'result lose';
                     }
-                    
                     isSpinning = false;
                     spinBtn.disabled = false;
                 }
@@ -253,7 +218,7 @@
         
         spinBtn.addEventListener('click', spin);
         
-        // Восстановление попыток (каждые 24ч)
+        // Восстановление попыток
         const lastReset = localStorage.getItem('lastReset');
         const now = Date.now();
         if (lastReset && (now - parseInt(lastReset)) > 86400000) {
@@ -263,8 +228,6 @@
         } else if (!lastReset) {
             localStorage.setItem('lastReset', now.toString());
         }
-        
-        // Сохраняем статистику
         localStorage.setItem('attempts', attempts);
         localStorage.setItem('wins', wins);
         localStorage.setItem('total', total);
