@@ -25,7 +25,7 @@
             backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 30px;
-            max-width: 450px;
+            max-width: 400px;
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -41,46 +41,13 @@
             text-align: center;
             color: #888;
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            background: transparent;
-            color: #888;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .tab-btn.active {
-            background: rgba(255, 215, 0, 0.15);
-            border-color: #ffd93d;
-            color: #ffd93d;
-        }
-        .tab-btn:active {
-            transform: scale(0.95);
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
         .slot-machine {
             background: #1a0030;
             border-radius: 20px;
             padding: 30px 20px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             border: 2px solid rgba(255, 215, 0, 0.3);
         }
         .reels {
@@ -158,47 +125,16 @@
             font-weight: bold;
             color: #ffd93d;
         }
-
-        .rating-list {
-            padding: 10px 0;
-        }
-        .rating-empty {
-            text-align: center;
-            color: #888;
-            padding: 30px;
-        }
-        .refresh-btn {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            background: transparent;
-            color: #888;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s;
-        }
-        .refresh-btn:active {
-            transform: scale(0.95);
-        }
-        .open-chat-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
+        .rating-btn {
             background: linear-gradient(45deg, #4a00e0, #8e2de2);
-            color: white;
-            margin-top: 15px;
             box-shadow: 0 8px 25px rgba(74, 0, 224, 0.4);
         }
-        .open-chat-btn:active {
-            transform: scale(0.95);
+        .tap-area {
+            margin-top: 20px;
+            text-align: center;
+            color: #555;
+            font-size: 12px;
         }
-
         .toast {
             position: fixed;
             bottom: 30px;
@@ -225,57 +161,31 @@
     <div class="container">
         <h1>🎰 NFT CASINO</h1>
         <p class="subtitle">Выиграй цифровое искусство</p>
-
-        <div class="tabs">
-            <button class="tab-btn active" id="tabCasino" onclick="switchTab('casino')">🎰 Рулетка</button>
-            <button class="tab-btn" id="tabRating" onclick="switchTab('rating')">🏆 Рейтинг</button>
-        </div>
-
-        <!-- ===== ВКЛАДКА "РУЛЕТКА" ===== -->
-        <div class="tab-content active" id="tabCasinoContent">
-            <div class="slot-machine">
-                <div class="reels" id="reels">
-                    <div class="reel" id="reel1"></div>
-                    <div class="reel" id="reel2"></div>
-                    <div class="reel" id="reel3"></div>
-                </div>
-                <div class="result" id="result">Нажми "Крутить!"</div>
+        <div class="slot-machine">
+            <div class="reels" id="reels">
+                <div class="reel" id="reel1"></div>
+                <div class="reel" id="reel2"></div>
+                <div class="reel" id="reel3"></div>
             </div>
-            <button class="button" id="spinBtn">🎰 Крутить!</button>
-            <div class="info">
-                <div class="info-item">
-                    <div class="label">🎯 Выигрыши</div>
-                    <div class="value" id="wins">0</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">🎮 Всего игр</div>
-                    <div class="value" id="total">0</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">🏅 Место</div>
-                    <div class="value" id="rank">-</div>
-                </div>
+            <div class="result" id="result">Нажми "Крутить!"</div>
+        </div>
+        <button class="button" id="spinBtn">🎰 Крутить!</button>
+        <button class="button rating-btn" id="ratingBtn">🏆 Рейтинг</button>
+        <div class="info">
+            <div class="info-item">
+                <div class="label">🎯 Выигрыши</div>
+                <div class="value" id="wins">0</div>
+            </div>
+            <div class="info-item">
+                <div class="label">🎮 Всего игр</div>
+                <div class="value" id="total">0</div>
+            </div>
+            <div class="info-item">
+                <div class="label">🏅 Место</div>
+                <div class="value" id="rank">-</div>
             </div>
         </div>
-
-        <!-- ===== ВКЛАДКА "РЕЙТИНГ" ===== -->
-        <div class="tab-content" id="tabRatingContent">
-            <div class="rating-list" id="ratingList">
-                <div class="rating-empty">
-                    📊 Для просмотра рейтинга нажми кнопку ниже
-                </div>
-            </div>
-            <button class="open-chat-btn" onclick="openBotChat()">
-                📱 Открыть чат с ботом
-            </button>
-            <div style="text-align:center;color:#555;font-size:12px;margin-top:12px;">
-                После открытия чата напиши команду /top
-            </div>
-        </div>
-
-        <div class="tap-area" style="margin-top:15px;text-align:center;color:#555;font-size:12px;">
-            ⚡ Демо-версия. Играй и попади в ТОП-10!
-        </div>
+        <div class="tap-area">⚡ Демо-версия. Играй и попади в ТОП-10!</div>
     </div>
 
     <div class="toast" id="toast"></div>
@@ -299,28 +209,7 @@
         const BOT_TOKEN = '8992217710:AAHgdwlL6Fbvuc3J4RuvhHNO5j9n3Vuo9sY';
         const BOT_USERNAME = 'democasinotgBot';
 
-        // ===== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК =====
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-            if (tab === 'casino') {
-                document.getElementById('tabCasinoContent').classList.add('active');
-                document.getElementById('tabCasino').classList.add('active');
-            } else if (tab === 'rating') {
-                document.getElementById('tabRatingContent').classList.add('active');
-                document.getElementById('tabRating').classList.add('active');
-            }
-        }
-
-        // ===== ОТКРЫТИЕ ЧАТА С БОТОМ =====
-        function openBotChat() {
-            const tg = window.Telegram.WebApp;
-            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
-            showToast('📱 Открываем чат с ботом...', 2000);
-        }
-
-        // ===== КОД РУЛЕТКИ =====
+        // ===== ПЕРЕМЕННЫЕ =====
         let wins = 0,
             total = 0,
             isSpinning = false;
@@ -329,6 +218,7 @@
         const reel3 = document.getElementById('reel3');
         const resultDiv = document.getElementById('result');
         const spinBtn = document.getElementById('spinBtn');
+        const ratingBtn = document.getElementById('ratingBtn');
         const winsSpan = document.getElementById('wins');
         const totalSpan = document.getElementById('total');
         const rankSpan = document.getElementById('rank');
@@ -336,6 +226,7 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        // ===== ФУНКЦИИ =====
         function getRandomNFT() {
             return nftImages[Math.floor(Math.random() * nftImages.length)];
         }
@@ -380,6 +271,13 @@
             });
         }
 
+        function openRating() {
+            // Просто открываем чат с ботом
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}`);
+            showToast('📱 Открываем чат с ботом...', 2000);
+        }
+
+        // ===== ОСНОВНАЯ ФУНКЦИЯ SPIN =====
         function spin() {
             if (isSpinning) return;
 
@@ -428,7 +326,9 @@
             }, 80);
         }
 
+        // ===== СОБЫТИЯ КНОПОК =====
         spinBtn.addEventListener('click', spin);
+        ratingBtn.addEventListener('click', openRating);
 
         // ===== ПРИ ЗАГРУЗКЕ =====
         renderReel(reel1, getRandomNFT());
