@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Casino</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #0a0015, #1a0030);
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .slot-machine {
+            background: #1a0030;
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+        .reels {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 64px;
+            padding: 20px 0;
+        }
+        .reel {
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 15px;
+            min-width: 80px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+        .reel.spinning {
+            animation: spin 0.1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 15px;
+            min-height: 30px;
+            font-weight: bold;
+        }
+        .result.win {
+            color: #ffd93d;
+        }
+        .result.lose {
+            color: #ff6b6b;
+        }
+        .button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
+        }
+        .button:active {
+            transform: scale(0.95);
+        }
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+        .info-item {
+            text-align: center;
+        }
+        .info-item .label {
+            font-size: 12px;
+            color: #888;
+        }
+        .info-item .value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd93d;
+        }
+        .tap-area {
+            margin-top: 20px;
+            text-align: center;
+            color: #555;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎰 DEMO CASINO</h1>
+        <p class="subtitle">Только для развлечения</p>
+        
+        <div class="slot-machine">
+            <div class="reels" id="reels">
+                <div class="reel" id="reel1">🍒</div>
+                <div class="reel" id="reel2">🍋</div>
+                <div class="reel" id="reel3">🍊</div>
+            </div>
+            <div class="result" id="result">Нажми "Крутить!"</div>
+        </div>
+        
+        <button class="button" id="spinBtn">🎰 Крутить!</button>
+        
+        <div class="info">
+            <div class="info-item">
+                <div class="label">Попытки</div>
+                <div class="value" id="attempts">5</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Выигрыши</div>
+                <div class="value" id="wins">0</div>
+            </div>
+            <div class="info-item">
+                <div class="label">Всего игр</div>
+                <div class="value" id="total">0</div>
+            </div>
+        </div>
+        
+        <div class="tap-area">
+            ⚡ Демо-версия. Без реальных призов
+        </div>
+    </div>
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const emojis = ['🍒', '🍋', '🍊', '🍇', '💎', '7️⃣', '🔔', '⭐'];
+        let attempts = 5;
+        let wins = 0;
+        let total = 0;
+        let isSpinning = false;
+        
+        const reel1 = document.getElementById('reel1');
+        const reel2 = document.getElementById('reel2');
+        const reel3 = document.getElementById('reel3');
+        const resultDiv = document.getElementById('result');
+        const spinBtn = document.getElementById('spinBtn');
+        const attemptsSpan = document.getElementById('attempts');
+        const winsSpan = document.getElementById('wins');
+        const totalSpan = document.getElementById('total');
+        
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Открываем на весь экран
+        
+        function getRandomEmoji() {
+            return emojis[Math.floor(Math.random() * emojis.length)];
+        }
+        
+        function spin() {
+            if (isSpinning) return;
+            if (attempts <= 0) {
+                resultDiv.textContent = '❌ Попытки кончились! Завтра обновятся';
+                resultDiv.className = 'result lose';
+                return;
+            }
+            
+            isSpinning = true;
+            spinBtn.disabled = true;
+            attempts--;
+            attemptsSpan.textContent = attempts;
+            
+            // Анимация вращения
+            let count = 0;
+            const interval = setInterval(() => {
+                reel1.textContent = getRandomEmoji();
+                reel2.textContent = getRandomEmoji();
+                reel3.textContent = getRandomEmoji();
+                count++;
+                if (count > 20) {
+                    clearInterval(interval);
+                    // Финальный результат
+                    const result1 = getRandomEmoji();
+                    const result2 = getRandomEmoji();
+                    const result3 = getRandomEmoji();
+                    
+                    reel1.textContent = result1;
+                    reel2.textContent = result2;
+                    reel3.textContent = result3;
+                    
+                    total++;
+                    totalSpan.textContent = total;
+                    
+                    // Проверка выигрыша
+                    if (result1 === result2 && result2 === result3) {
+                        wins++;
+                        winsSpan.textContent = wins;
+                        resultDiv.textContent = '🎉 ДЖЕКПОТ! Три одинаковых!';
+                        resultDiv.className = 'result win';
+                    } else if (result1 === result2 || result2 === result3 || result1 === result3) {
+                        resultDiv.textContent = '🔔 Два совпали! Почти выиграл!';
+                        resultDiv.className = 'result win';
+                    } else {
+                        resultDiv.textContent = '😔 Ничего не совпало. Попробуй ещё!';
+                        resultDiv.className = 'result lose';
+                    }
+                    
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                }
+            }, 80);
+        }
+        
+        spinBtn.addEventListener('click', spin);
+        
+        // Восстановление попыток (каждые 24ч)
+        const lastReset = localStorage.getItem('lastReset');
+        const now = Date.now();
+        if (lastReset && (now - parseInt(lastReset)) > 86400000) {
+            attempts = 5;
+            localStorage.setItem('lastReset', now.toString());
+            attemptsSpan.textContent = attempts;
+        } else if (!lastReset) {
+            localStorage.setItem('lastReset', now.toString());
+        }
+        
+        // Сохраняем статистику
+        localStorage.setItem('attempts', attempts);
+        localStorage.setItem('wins', wins);
+        localStorage.setItem('total', total);
+    </script>
+</body>
+</html>
