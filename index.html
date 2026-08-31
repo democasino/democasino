@@ -136,7 +136,6 @@
             font-size: 12px;
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ПОДДЕРЖКИ ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -189,10 +188,6 @@
             font-size: 16px;
             line-height: 1.6;
             margin-bottom: 25px;
-        }
-        .modal-text .highlight {
-            color: #ffd93d;
-            font-weight: bold;
         }
         .modal-btn {
             width: 100%;
@@ -277,7 +272,6 @@
         <div class="tap-area">⚡ Демо-версия. Играй и получай удовольствие!</div>
     </div>
 
-    <!-- ===== МОДАЛЬНОЕ ОКНО ===== -->
     <div class="modal-overlay" id="supportModal">
         <div class="modal">
             <div class="modal-title">❤️ ПОДДЕРЖКА АВТОРА</div>
@@ -293,7 +287,6 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // ===== ТВОИ NFT КАРТИНКИ =====
         const nftImages = [
             'https://i.postimg.cc/K1gPgfxn/lv-0-20260831162300.png',
             'https://i.postimg.cc/87hFS0Tq/lv-0-20260831160855.png',
@@ -306,11 +299,9 @@
             'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png',
         ];
 
-        // ===== НАСТРОЙКИ =====
         const BOT_TOKEN = '8992217710:AAHgdwlL6Fbvuc3J4RuvhHNO5j9n3Vuo9sY';
         const DEVELOPER_USERNAME = 'bpsux';
 
-        // ===== ПЕРЕМЕННЫЕ =====
         let wins = 0,
             total = 0,
             isSpinning = false;
@@ -326,14 +317,12 @@
         const toast = document.getElementById('toast');
         const tg = window.Telegram.WebApp;
 
-        // Модальное окно
         const modal = document.getElementById('supportModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const sendGiftBtn = document.getElementById('sendGiftBtn');
 
         tg.expand();
 
-        // ===== ФУНКЦИИ =====
         function getRandomNFT() {
             return nftImages[Math.floor(Math.random() * nftImages.length)];
         }
@@ -378,7 +367,6 @@
             });
         }
 
-        // ===== МОДАЛЬНОЕ ОКНО =====
         function openModal() {
             modal.classList.add('active');
         }
@@ -388,13 +376,11 @@
         }
 
         function sendGift() {
-            // Открываем чат с разработчиком
             tg.openTelegramLink(`https://t.me/${DEVELOPER_USERNAME}`);
             closeModal();
             showToast('📱 Открываем чат с автором...', 2000);
         }
 
-        // ===== ОСНОВНАЯ ФУНКЦИЯ SPIN =====
         function spin() {
             if (isSpinning) return;
 
@@ -443,20 +429,17 @@
             }, 80);
         }
 
-        // ===== СОБЫТИЯ КНОПОК =====
         spinBtn.addEventListener('click', spin);
         supportBtn.addEventListener('click', openModal);
         closeModalBtn.addEventListener('click', closeModal);
         sendGiftBtn.addEventListener('click', sendGift);
 
-        // Закрытие по клику вне модалки
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
                 closeModal();
             }
         });
 
-        // ===== ПРИ ЗАГРУЗКЕ =====
         renderReel(reel1, getRandomNFT());
         renderReel(reel2, getRandomNFT());
         renderReel(reel3, getRandomNFT());
