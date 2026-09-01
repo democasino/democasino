@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Casino</title>
+    <title>NFT Casino - Кейсы</title>
     <style>
         * {
             margin: 0;
@@ -25,7 +25,7 @@
             backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 30px;
-            max-width: 400px;
+            max-width: 450px;
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -43,166 +43,176 @@
             font-size: 14px;
             margin-bottom: 20px;
         }
-        .tabs {
+        .balance {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd93d;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        .cases-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .case-btn {
+            padding: 16px 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .case-btn:active {
+            transform: scale(0.95);
+        }
+        .case-btn .price {
+            display: block;
+            font-size: 12px;
+            color: #ffd93d;
+            margin-top: 4px;
+        }
+        .case-btn.free {
+            border-color: rgba(0, 255, 200, 0.3);
+        }
+        .case-btn.common {
+            border-color: rgba(100, 200, 255, 0.3);
+        }
+        .case-btn.medium {
+            border-color: rgba(200, 100, 255, 0.3);
+        }
+        .case-btn.lux {
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+        .case-btn.legendary {
+            border-color: rgba(255, 50, 50, 0.5);
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
             display: flex;
+        }
+        .modal {
+            background: linear-gradient(145deg, #1a0a2e, #2d1b4e);
+            border-radius: 30px;
+            padding: 35px 25px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd93d;
+            margin-bottom: 15px;
+        }
+        .modal-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 20px;
         }
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
+        .modal-item {
+            text-align: center;
+            padding: 10px 5px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+            color: #ccc;
+        }
+        .modal-item .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .modal-item .nft-tag {
+            font-size: 10px;
+            color: #ff6b6b;
+            background: rgba(255, 0, 0, 0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .modal-result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            min-height: 60px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .modal-result.win {
+            color: #ffd93d;
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+        .modal-result.lose {
+            color: #ff6b6b;
+            border-color: rgba(255, 0, 0, 0.2);
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(45deg, #ffd93d, #f7971e);
+            color: #1a0030;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            transition: all 0.2s;
+        }
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+        .modal-close-btn {
+            width: 100%;
+            padding: 14px;
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             background: transparent;
             color: #888;
             font-size: 16px;
-            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-        .tab-btn.active {
-            background: rgba(255, 215, 0, 0.15);
-            border-color: #ffd93d;
-            color: #ffd93d;
-        }
-        .tab-btn:active {
-            transform: scale(0.95);
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .slot-machine {
-            background: #1a0030;
-            border-radius: 20px;
-            padding: 30px 20px;
-            margin-bottom: 20px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-        }
-        .reels {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px 0;
-        }
-        .reel {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 15px;
-            min-width: 100px;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-        .reel img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-        .result {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 15px;
-            min-height: 30px;
-            font-weight: bold;
-        }
-        .result.win {
-            color: #ffd93d;
-        }
-        .result.lose {
-            color: #ff6b6b;
-        }
-        .button {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
-            margin-bottom: 12px;
-        }
-        .button:active {
-            transform: scale(0.95);
-        }
-        .button:disabled {
-            opacity: 0.5;
-        }
-        .support-btn {
-            background: linear-gradient(45deg, #4a00e0, #8e2de2);
-            box-shadow: 0 8px 25px rgba(74, 0, 224, 0.4);
-        }
-        .profile-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 25px;
-            border: 1px solid rgba(255, 215, 0, 0.1);
-        }
-        .profile-avatar {
-            text-align: center;
-            font-size: 64px;
-            margin-bottom: 10px;
-        }
-        .profile-name {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: #ffd93d;
-            margin-bottom: 5px;
-        }
-        .profile-id {
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        .profile-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .stat-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .stat-item .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffd93d;
-        }
-        .stat-item .stat-label {
-            font-size: 12px;
-            color: #888;
-            margin-top: 4px;
-        }
-        .profile-support {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(74, 0, 224, 0.15);
-            border-radius: 12px;
-            border: 1px solid rgba(74, 0, 224, 0.3);
-            text-align: center;
-        }
-        .profile-support .support-text {
-            color: #ccc;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .profile-support .support-link {
-            color: #ffd93d;
-            font-weight: bold;
-            text-decoration: none;
+            margin-top: 10px;
         }
         .toast {
             position: fixed;
@@ -215,7 +225,7 @@
             border-radius: 30px;
             font-size: 14px;
             font-weight: bold;
-            z-index: 1000;
+            z-index: 2000;
             opacity: 0;
             transition: opacity 0.5s ease;
             pointer-events: none;
@@ -229,57 +239,29 @@
 <body>
     <div class="container">
         <h1>🎰 NFT CASINO</h1>
-        <p class="subtitle">Выиграй цифровое искусство</p>
+        <p class="subtitle">Открывай кейсы и выигрывай NFT</p>
+        <div class="balance" id="balanceDisplay">⭐ 9999</div>
 
-        <div class="tabs">
-            <button class="tab-btn active" id="tabGame" onclick="switchTab('game')">🎰 Игра</button>
-            <button class="tab-btn" id="tabProfile" onclick="switchTab('profile')">👤 Профиль</button>
+        <div class="cases-grid" id="casesGrid">
+            <button class="case-btn free" data-case="free">🎁 Бесплатный<span class="price">0 ⭐</span></button>
+            <button class="case-btn common" data-case="common">🔵 Обычный<span class="price">50 ⭐</span></button>
+            <button class="case-btn medium" data-case="medium">🟣 Средний<span class="price">100 ⭐</span></button>
+            <button class="case-btn lux" data-case="lux">🟡 Люкс<span class="price">250 ⭐</span></button>
+            <button class="case-btn legendary" data-case="legendary">🔥 Легендарный<span class="price">500 ⭐</span></button>
         </div>
 
-        <div class="tab-content active" id="tabGameContent">
-            <div class="slot-machine">
-                <div class="reels" id="reels">
-                    <div class="reel" id="reel1"></div>
-                    <div class="reel" id="reel2"></div>
-                    <div class="reel" id="reel3"></div>
-                </div>
-                <div class="result" id="result">Нажми "Крутить!"</div>
-            </div>
-            <button class="button" id="spinBtn">🎰 Крутить!</button>
-            <button class="button support-btn" id="supportBtn">❤️ Поддержать автора</button>
-            <div style="text-align:center;color:#555;font-size:12px;margin-top:10px;">
-                ⚡ Демо-версия. Играй и получай удовольствие!
-            </div>
+        <div style="text-align:center;color:#555;font-size:12px;margin-top:10px;">
+            ⚡ Демо-версия. Все звёзды бесконечны.
         </div>
+    </div>
 
-        <div class="tab-content" id="tabProfileContent">
-            <div class="profile-card">
-                <div class="profile-avatar">🎰</div>
-                <div class="profile-name" id="profileName">Игрок</div>
-                <div class="profile-id" id="profileId">ID: ---</div>
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <div class="stat-value" id="profileWins">0</div>
-                        <div class="stat-label">🏆 Победы</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="profileGames">0</div>
-                        <div class="stat-label">🎮 Всего игр</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="profileWinRate">0%</div>
-                        <div class="stat-label">📈 Процент побед</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="profileBestPrize">-</div>
-                        <div class="stat-label">👑 Лучший приз</div>
-                    </div>
-                </div>
-                <div class="profile-support">
-                    <div class="support-text">❤️ Если тебе нравится игра — поддержи автора!</div>
-                    <a href="#" onclick="openSupport(); return false;" class="support-link">@bpsux</a>
-                </div>
-            </div>
+    <div class="modal-overlay" id="caseModal">
+        <div class="modal">
+            <div class="modal-title" id="modalTitle">📦 Открытие кейса</div>
+            <div class="modal-items" id="modalItems"></div>
+            <div class="modal-result" id="modalResult">🎰 Нажми "Открыть"</div>
+            <button class="modal-btn" id="openCaseBtn">🔑 Открыть</button>
+            <button class="modal-close-btn" id="closeModalBtn">Закрыть</button>
         </div>
     </div>
 
@@ -287,150 +269,260 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        const DEVELOPER_USERNAME = 'bpsux';
-
-        const prizes = [
-            { name: '🎁 Подарок (15⭐)', price: 15, weight: 30, img: 'https://i.postimg.cc/18pgQj9x/lv-0-20260831161053.png' },
-            { name: '🎁 Подарок (15⭐)', price: 15, weight: 30, img: 'https://i.postimg.cc/k2xVmp7L/lv-0-20260831161146.png' },
-            { name: '🎁 Подарок (25⭐)', price: 25, weight: 25, img: 'https://i.postimg.cc/xXKk240n/lv-0-20260831161010.png' },
-            { name: '🎁 Подарок (25⭐)', price: 25, weight: 25, img: 'https://i.postimg.cc/SjyjVtrM/lv-0-20260901085459.png' },
-            { name: '🎁 Подарок (50⭐)', price: 50, weight: 20, img: 'https://i.postimg.cc/grYr4BDh/lv-0-20260901085803.png' },
-            { name: '🎁 Подарок (50⭐)', price: 50, weight: 20, img: 'https://i.postimg.cc/G9c9zSQs/lv-0-20260901085608.png' },
-            { name: '💎 Средний (100⭐)', price: 100, weight: 15, img: 'https://i.postimg.cc/87hFS0Tq/lv-0-20260831160855.png' },
-            { name: '🖼️ NFT #1', price: 400, weight: 5, img: 'https://i.postimg.cc/jDzWbFRP/lv-0-20260831161855.png' },
-            { name: '🖼️ NFT #2', price: 500, weight: 4, img: 'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png' },
-            { name: '👑 Легендарный NFT', price: 1000, weight: 2, img: 'https://i.postimg.cc/21pqgDNF/lv-0-20260831161958.png' }
-        ];
-
-        function getRandomPrize() {
-            const totalWeight = prizes.reduce((sum, p) => sum + p.weight, 0);
-            let random = Math.random() * totalWeight;
-            for (const prize of prizes) {
-                random -= prize.weight;
-                if (random <= 0) return prize;
-            }
-            return prizes[0];
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            if (tab === 'game') {
-                document.getElementById('tabGameContent').classList.add('active');
-                document.getElementById('tabGame').classList.add('active');
-            } else if (tab === 'profile') {
-                document.getElementById('tabProfileContent').classList.add('active');
-                document.getElementById('tabProfile').classList.add('active');
-                updateProfile();
-            }
-        }
-
-        function updateProfile() {
-            const wins = parseInt(localStorage.getItem('localWins') || 0);
-            const total = parseInt(localStorage.getItem('localTotal') || 0);
-            const bestName = localStorage.getItem('bestPrizeName') || '-';
-            document.getElementById('profileWins').textContent = wins;
-            document.getElementById('profileGames').textContent = total;
-            document.getElementById('profileWinRate').textContent = total > 0 ? Math.round((wins / total) * 100) + '%' : '0%';
-            document.getElementById('profileBestPrize').textContent = bestName;
-            const tg = window.Telegram.WebApp;
-            const user = tg.initDataUnsafe?.user;
-            if (user) {
-                document.getElementById('profileName').textContent = user.first_name || 'Игрок';
-                document.getElementById('profileId').textContent = `ID: ${user.id}`;
-            }
-        }
-
-        function openSupport() {
-            const tg = window.Telegram.WebApp;
-            tg.openTelegramLink(`https://t.me/${DEVELOPER_USERNAME}`);
-            showToast('📱 Открываем чат с автором...', 2000);
-        }
-
-        let wins = 0, total = 0, bestPrizePrice = 0, bestPrizeName = '-', isSpinning = false;
-        const reel1 = document.getElementById('reel1');
-        const reel2 = document.getElementById('reel2');
-        const reel3 = document.getElementById('reel3');
-        const resultDiv = document.getElementById('result');
-        const spinBtn = document.getElementById('spinBtn');
-        const supportBtn = document.getElementById('supportBtn');
-        const toast = document.getElementById('toast');
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        function renderReel(element, prize) {
-            element.innerHTML = `<img src="${prize.img}" alt="${prize.name}">`;
-            element.dataset.price = prize.price;
-            element.dataset.name = prize.name;
-        }
+        // ===== НАСТРОЙКИ =====
+        let balance = 9999;
+        let currentCase = null;
 
-        function showToast(message, duration = 3000) {
+        // ===== КЕЙСЫ =====
+        const CASES = {
+            free: {
+                name: '🎁 Бесплатный',
+                price: 0,
+                items: [
+                    // Визуальные NFT (только для красоты)
+                    { name: '🖼️ NFT Mirage #1', type: 'display' },
+                    { name: '🖼️ NFT Mirage #2', type: 'display' },
+                    { name: '🖼️ NFT Mirage #3', type: 'display' },
+                    // Реальные призы
+                    { name: '🍀 Попробуй снова', type: 'real', weight: 60 },
+                    { name: '⭐ 1 звезда', type: 'real', weight: 25 },
+                    { name: '🎁 Подарок', type: 'real', weight: 15 },
+                ],
+                realItems: [
+                    { name: '🍀 Попробуй снова', weight: 60 },
+                    { name: '⭐ 1 звезда', weight: 25 },
+                    { name: '🎁 Подарок', weight: 15 },
+                ]
+            },
+            common: {
+                name: '🔵 Обычный',
+                price: 50,
+                items: [
+                    { name: '🖼️ NFT Mirage #1', type: 'display' },
+                    { name: '🖼️ NFT Mirage #2', type: 'display' },
+                    { name: '🖼️ NFT Mirage #3', type: 'display' },
+                    { name: '🖼️ NFT Real #1', type: 'real', weight: 2 },
+                    { name: '🖼️ NFT Real #2', type: 'real', weight: 2 },
+                    { name: '🎁 Подарок', type: 'real', weight: 40 },
+                    { name: '⭐ 5 звёзд', type: 'real', weight: 30 },
+                    { name: '🍀 Попробуй снова', type: 'real', weight: 26 },
+                ],
+                realItems: [
+                    { name: '🖼️ NFT Real #1', weight: 2 },
+                    { name: '🖼️ NFT Real #2', weight: 2 },
+                    { name: '🎁 Подарок', weight: 40 },
+                    { name: '⭐ 5 звёзд', weight: 30 },
+                    { name: '🍀 Попробуй снова', weight: 26 },
+                ]
+            },
+            medium: {
+                name: '🟣 Средний',
+                price: 100,
+                items: [
+                    { name: '🖼️ NFT Mirage #1', type: 'display' },
+                    { name: '🖼️ NFT Mirage #2', type: 'display' },
+                    { name: '🖼️ NFT Mirage #3', type: 'display' },
+                    { name: '🖼️ NFT Mirage #4', type: 'display' },
+                    { name: '🖼️ NFT Real #1', type: 'real', weight: 2 },
+                    { name: '🖼️ NFT Real #2', type: 'real', weight: 2 },
+                    { name: '🖼️ NFT Real #3', type: 'real', weight: 2 },
+                    { name: '🎁 Подарок', type: 'real', weight: 35 },
+                    { name: '⭐ 10 звёзд', type: 'real', weight: 25 },
+                    { name: '🍀 Попробуй снова', type: 'real', weight: 34 },
+                ],
+                realItems: [
+                    { name: '🖼️ NFT Real #1', weight: 2 },
+                    { name: '🖼️ NFT Real #2', weight: 2 },
+                    { name: '🖼️ NFT Real #3', weight: 2 },
+                    { name: '🎁 Подарок', weight: 35 },
+                    { name: '⭐ 10 звёзд', weight: 25 },
+                    { name: '🍀 Попробуй снова', weight: 34 },
+                ]
+            },
+            lux: {
+                name: '🟡 Люкс',
+                price: 250,
+                items: [
+                    { name: '🖼️ NFT Mirage #1', type: 'display' },
+                    { name: '🖼️ NFT Mirage #2', type: 'display' },
+                    { name: '🖼️ NFT Mirage #3', type: 'display' },
+                    { name: '🖼️ NFT Mirage #4', type: 'display' },
+                    { name: '🖼️ NFT Real #1', type: 'real', weight: 3 },
+                    { name: '🖼️ NFT Real #2', type: 'real', weight: 3 },
+                    { name: '🖼️ NFT Real #3', type: 'real', weight: 3 },
+                    { name: '🖼️ NFT Real #4', type: 'real', weight: 3 },
+                    { name: '🎁 Подарок', type: 'real', weight: 30 },
+                    { name: '⭐ 25 звёзд', type: 'real', weight: 20 },
+                    { name: '🍀 Попробуй снова', type: 'real', weight: 38 },
+                ],
+                realItems: [
+                    { name: '🖼️ NFT Real #1', weight: 3 },
+                    { name: '🖼️ NFT Real #2', weight: 3 },
+                    { name: '🖼️ NFT Real #3', weight: 3 },
+                    { name: '🖼️ NFT Real #4', weight: 3 },
+                    { name: '🎁 Подарок', weight: 30 },
+                    { name: '⭐ 25 звёзд', weight: 20 },
+                    { name: '🍀 Попробуй снова', weight: 38 },
+                ]
+            },
+            legendary: {
+                name: '🔥 Легендарный',
+                price: 500,
+                items: [
+                    { name: '🖼️ NFT Mirage #1', type: 'display' },
+                    { name: '🖼️ NFT Mirage #2', type: 'display' },
+                    { name: '🖼️ NFT Mirage #3', type: 'display' },
+                    { name: '🖼️ NFT Mirage #4', type: 'display' },
+                    { name: '🖼️ NFT Real #1', type: 'real', weight: 5 },
+                    { name: '🖼️ NFT Real #2', type: 'real', weight: 5 },
+                    { name: '🖼️ NFT Real #3', type: 'real', weight: 5 },
+                    { name: '🖼️ NFT Real #4', type: 'real', weight: 5 },
+                    { name: '🖼️ NFT Real #5', type: 'real', weight: 5 },
+                    { name: '🎁 Подарок', type: 'real', weight: 25 },
+                    { name: '⭐ 50 звёзд', type: 'real', weight: 20 },
+                    { name: '🍀 Попробуй снова', type: 'real', weight: 30 },
+                ],
+                realItems: [
+                    { name: '🖼️ NFT Real #1', weight: 5 },
+                    { name: '🖼️ NFT Real #2', weight: 5 },
+                    { name: '🖼️ NFT Real #3', weight: 5 },
+                    { name: '🖼️ NFT Real #4', weight: 5 },
+                    { name: '🖼️ NFT Real #5', weight: 5 },
+                    { name: '🎁 Подарок', weight: 25 },
+                    { name: '⭐ 50 звёзд', weight: 20 },
+                    { name: '🍀 Попробуй снова', weight: 30 },
+                ]
+            }
+        };
+
+        // ===== ФУНКЦИИ =====
+        function showToast(message) {
+            const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, duration);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function spin() {
-            if (isSpinning) return;
-            isSpinning = true;
-            spinBtn.disabled = true;
+        function updateBalance() {
+            document.getElementById('balanceDisplay').textContent = `⭐ ${balance}`;
+        }
 
-            let count = 0;
-            const interval = setInterval(() => {
-                renderReel(reel1, getRandomPrize());
-                renderReel(reel2, getRandomPrize());
-                renderReel(reel3, getRandomPrize());
-                count++;
-                if (count > 20) {
-                    clearInterval(interval);
-                    const r1 = getRandomPrize();
-                    const r2 = getRandomPrize();
-                    const r3 = getRandomPrize();
-                    renderReel(reel1, r1);
-                    renderReel(reel2, r2);
-                    renderReel(reel3, r3);
-                    total++;
-                    
-                    if (r1.price > bestPrizePrice) {
-                        bestPrizePrice = r1.price;
-                        bestPrizeName = r1.name;
-                        localStorage.setItem('bestPrizeName', bestPrizeName);
-                        localStorage.setItem('bestPrizePrice', bestPrizePrice);
-                    }
-
-                    // ✅ Правильная проверка: победа только при 3 совпадениях
-                    if (r1.price === r2.price && r2.price === r3.price) {
-                        wins++;
-                        resultDiv.textContent = `🎉 ДЖЕКПОТ! Три ${r1.name}!`;
-                        resultDiv.className = 'result win';
-                        showToast(`🎉 Выиграл ${r1.name} (${r1.price}⭐)!`, 3000);
-                    } else {
-                        resultDiv.textContent = `😔 Ничего не совпало. Попробуй ещё!`;
-                        resultDiv.className = 'result lose';
-                    }
-
-                    localStorage.setItem('localWins', wins);
-                    localStorage.setItem('localTotal', total);
-                    isSpinning = false;
-                    spinBtn.disabled = false;
+        function getRandomRealItem(caseKey) {
+            const caseData = CASES[caseKey];
+            const items = caseData.realItems;
+            const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
+            let random = Math.random() * totalWeight;
+            for (const item of items) {
+                random -= item.weight;
+                if (random <= 0) {
+                    return item;
                 }
-            }, 80);
+            }
+            return items[0];
         }
 
-        spinBtn.addEventListener('click', spin);
-        supportBtn.addEventListener('click', openSupport);
+        function openCase(caseKey) {
+            const caseData = CASES[caseKey];
+            const modal = document.getElementById('caseModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalItems = document.getElementById('modalItems');
+            const modalResult = document.getElementById('modalResult');
+            const openBtn = document.getElementById('openCaseBtn');
 
-        renderReel(reel1, getRandomPrize());
-        renderReel(reel2, getRandomPrize());
-        renderReel(reel3, getRandomPrize());
+            // Показываем визуал кейса
+            currentCase = caseKey;
+            modalTitle.textContent = `📦 ${caseData.name}`;
+            
+            // Отображаем все предметы в кейсе (визуал)
+            modalItems.innerHTML = caseData.items.map(item => {
+                const isDisplay = item.type === 'display';
+                return `
+                    <div class="modal-item">
+                        <span class="icon">${item.name.split(' ')[0]}</span>
+                        ${item.name}
+                        ${isDisplay ? '<span class="nft-tag">❓</span>' : ''}
+                    </div>
+                `;
+            }).join('');
 
-        wins = parseInt(localStorage.getItem('localWins') || 0);
-        total = parseInt(localStorage.getItem('localTotal') || 0);
-        bestPrizeName = localStorage.getItem('bestPrizeName') || '-';
-        bestPrizePrice = parseInt(localStorage.getItem('bestPrizePrice') || 0);
-        console.log('🎰 Игра загружена!');
+            modalResult.textContent = '🎰 Нажми "Открыть"';
+            modalResult.className = 'modal-result';
+            
+            // Показываем модалку
+            modal.classList.add('active');
+
+            // Обработчик открытия
+            openBtn.onclick = function() {
+                // Проверяем баланс
+                if (caseData.price > balance && caseKey !== 'free') {
+                    showToast('❌ Недостаточно звёзд!');
+                    return;
+                }
+
+                // Списываем звёзды (кроме бесплатного)
+                if (caseKey !== 'free') {
+                    balance -= caseData.price;
+                    updateBalance();
+                }
+
+                // Выбираем реальный приз
+                const prize = getRandomRealItem(caseKey);
+                
+                // Показываем результат
+                modalResult.textContent = `🎉 Выпало: ${prize.name}`;
+                modalResult.className = 'modal-result win';
+
+                // Если выпал NFT — показываем особое сообщение
+                if (prize.name.includes('NFT Real')) {
+                    showToast(`🖼️ Ты выиграл ${prize.name}!`);
+                } else if (prize.name === '🍀 Попробуй снова') {
+                    modalResult.textContent = `😔 ${prize.name}`;
+                    modalResult.className = 'modal-result lose';
+                } else if (prize.name.includes('⭐')) {
+                    // Добавляем звёзды, если выпали
+                    const stars = parseInt(prize.name.split(' ')[1]) || 0;
+                    if (stars > 0) {
+                        balance += stars;
+                        updateBalance();
+                        showToast(`⭐ +${stars} звёзд!`);
+                    }
+                }
+
+                // Отключаем кнопку на время
+                openBtn.disabled = true;
+                openBtn.textContent = '⏳ Открыто!';
+                setTimeout(() => {
+                    openBtn.disabled = false;
+                    openBtn.textContent = '🔑 Открыть ещё';
+                }, 1500);
+            };
+        }
+
+        // ===== СОБЫТИЯ КНОПОК =====
+        document.querySelectorAll('.case-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const caseKey = this.dataset.case;
+                openCase(caseKey);
+            });
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            document.getElementById('caseModal').classList.remove('active');
+        });
+
+        // Закрытие по клику на фон
+        document.getElementById('caseModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+
+        // ===== ПРИ ЗАГРУЗКЕ =====
+        updateBalance();
+        console.log('🎰 Кейсы загружены! Демо-режим.');
     </script>
 </body>
 </html>
