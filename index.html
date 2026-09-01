@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SollyGIFT — Кейсы</title>
+    <title>SollyGIFT</title>
     <style>
         * {
             margin: 0;
@@ -14,16 +14,15 @@
             background: linear-gradient(135deg, #0a0015, #1a0030);
             font-family: Arial, sans-serif;
             min-height: 100vh;
-            color: white;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: white;
+            padding: 20px;
         }
         .container {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
+            border-radius: 30px;
             padding: 25px;
             max-width: 480px;
             width: 100%;
@@ -35,34 +34,17 @@
         }
         .header h1 {
             font-size: 32px;
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #ff6b6b);
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shimmer 3s linear infinite;
-        }
-        @keyframes shimmer {
-            0% {
-                background-position: 0% center;
-            }
-            100% {
-                background-position: 200% center;
-            }
-        }
-        .header .subtitle {
-            color: #888;
-            font-size: 14px;
-            margin-top: 4px;
         }
         .balance {
             text-align: center;
             font-size: 24px;
-            font-weight: bold;
             color: #ffd93d;
             padding: 12px;
             background: rgba(255, 215, 0, 0.08);
             border-radius: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.15);
             margin-bottom: 20px;
         }
         .cases-grid {
@@ -79,10 +61,7 @@
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
         .case-btn:active {
             transform: scale(0.95);
@@ -100,10 +79,6 @@
             display: block;
             margin: 0 auto 8px;
             border-radius: 12px;
-            transition: transform 0.3s;
-        }
-        .case-btn:hover .case-img {
-            transform: scale(1.05);
         }
         .case-btn.free {
             border-color: rgba(0, 255, 200, 0.25);
@@ -120,37 +95,16 @@
         .case-btn.lux {
             border-color: rgba(255, 215, 0, 0.35);
             background: rgba(255, 215, 0, 0.08);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
         }
         .case-btn.legendary {
             border-color: rgba(255, 50, 50, 0.4);
             background: rgba(255, 50, 50, 0.1);
             box-shadow: 0 0 40px rgba(255, 50, 50, 0.08);
-            animation: legendaryGlow 2s ease-in-out infinite;
-        }
-        @keyframes legendaryGlow {
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(255, 50, 50, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 50px rgba(255, 50, 50, 0.25);
-            }
         }
         .case-btn.emerald {
             border-color: rgba(0, 255, 150, 0.4);
             background: rgba(0, 255, 150, 0.08);
             box-shadow: 0 0 40px rgba(0, 255, 150, 0.08);
-            animation: emeraldGlow 2s ease-in-out infinite;
-        }
-        @keyframes emeraldGlow {
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(0, 255, 150, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 50px rgba(0, 255, 150, 0.25);
-            }
         }
         .modal-overlay {
             display: none;
@@ -159,8 +113,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -171,56 +125,46 @@
         }
         .modal {
             background: linear-gradient(145deg, #1a0a2e, #2d1b4e);
-            border-radius: 40px;
+            border-radius: 30px;
             padding: 35px 25px;
             max-width: 440px;
             width: 100%;
             border: 1px solid rgba(255, 215, 0, 0.15);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
-            animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: modalIn 0.3s ease;
         }
         @keyframes modalIn {
             from {
-                transform: scale(0.8) translateY(40px);
+                transform: scale(0.8);
                 opacity: 0;
             }
             to {
-                transform: scale(1) translateY(0);
+                transform: scale(1);
                 opacity: 1;
             }
         }
         .modal-title {
             text-align: center;
-            font-size: 26px;
-            font-weight: bold;
+            font-size: 24px;
             color: #ffd93d;
             margin-bottom: 15px;
         }
         .modal-items {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 20px;
-            min-height: 120px;
             padding: 12px;
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
         }
         .modal-item {
             text-align: center;
             padding: 12px 4px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 14px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             font-size: 12px;
             color: #ccc;
-            transition: all 0.1s;
-        }
-        .modal-item .icon {
-            font-size: 34px;
-            display: block;
-            margin-bottom: 4px;
         }
         .modal-item img {
             width: 50px;
@@ -230,134 +174,57 @@
             margin: 0 auto 4px;
             border-radius: 8px;
         }
-        .modal-item .nft-tag {
-            font-size: 9px;
-            color: #ff6b6b;
-            background: rgba(255, 0, 0, 0.12);
-            padding: 2px 10px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-top: 2px;
-        }
-        .modal-item .real-tag {
-            font-size: 9px;
-            color: #4ecdc4;
-            background: rgba(0, 255, 200, 0.1);
-            padding: 2px 10px;
-            border-radius: 12px;
-            display: inline-block;
-            margin-top: 2px;
-        }
         .modal-item.highlight {
             border-color: #ffd93d;
             background: rgba(255, 215, 0, 0.1);
             transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
-        }
-        .modal-item.spinning {
-            border-color: rgba(255, 255, 255, 0.2);
-            animation: spinItem 0.08s linear infinite;
-        }
-        @keyframes spinItem {
-            0% {
-                transform: rotate(0deg) scale(1);
-            }
-            50% {
-                transform: rotate(5deg) scale(1.02);
-            }
-            100% {
-                transform: rotate(0deg) scale(1);
-            }
         }
         .modal-result {
             text-align: center;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
-            padding: 18px;
-            border-radius: 20px;
+            padding: 15px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            min-height: 70px;
+            min-height: 60px;
             border: 1px solid rgba(255, 215, 0, 0.08);
             background: rgba(0, 0, 0, 0.15);
-            transition: all 0.4s;
         }
         .modal-result.win {
             color: #ffd93d;
             border-color: rgba(255, 215, 0, 0.25);
-            background: rgba(255, 215, 0, 0.05);
-            animation: resultWin 0.6s ease;
-        }
-        @keyframes resultWin {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
         }
         .modal-result.lose {
             color: #ff6b6b;
             border-color: rgba(255, 0, 0, 0.1);
         }
-        .modal-result.legendary-win {
-            color: #ffd700;
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.12);
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.15);
-            animation: legendaryWin 0.8s ease;
-        }
-        @keyframes legendaryWin {
-            0% {
-                transform: scale(0.5) rotate(-10deg);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.2) rotate(3deg);
-            }
-            100% {
-                transform: scale(1) rotate(0);
-                opacity: 1;
-            }
-        }
         .modal-btn {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             border: none;
-            border-radius: 20px;
-            font-size: 20px;
+            border-radius: 15px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             background: linear-gradient(45deg, #ffd93d, #f7971e);
             color: #1a0030;
-            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.25);
-            transition: all 0.2s;
         }
         .modal-btn:active {
             transform: scale(0.95);
         }
         .modal-btn:disabled {
             opacity: 0.5;
-            cursor: not-allowed;
         }
         .modal-close-btn {
             width: 100%;
             padding: 14px;
             border: 2px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
+            border-radius: 15px;
             background: transparent;
             color: #888;
             font-size: 16px;
             cursor: pointer;
             margin-top: 12px;
-            transition: all 0.2s;
-        }
-        .modal-close-btn:active {
-            transform: scale(0.95);
         }
         .toast {
             position: fixed;
@@ -366,64 +233,26 @@
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.85);
             color: #ffd93d;
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-radius: 30px;
-            font-size: 15px;
-            font-weight: bold;
+            font-size: 14px;
             z-index: 2000;
             opacity: 0;
             transition: opacity 0.4s ease;
-            pointer-events: none;
-            border: 1px solid rgba(255, 215, 0, 0.12);
         }
         .toast.show {
             opacity: 1;
-        }
-        .bg-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .bg-stars span {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            animation: starFloat 6s linear infinite;
-        }
-        @keyframes starFloat {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            20% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1);
-                opacity: 0;
-            }
         }
         .footer {
             text-align: center;
             color: #555;
             font-size: 11px;
             margin-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
             padding-top: 14px;
         }
     </style>
 </head>
 <body>
-
-    <div class="bg-stars" id="bgStars"></div>
-
     <div class="container">
         <div class="header">
             <h1>SollyGIFT</h1>
@@ -431,35 +260,35 @@
         </div>
         <div class="balance" id="balanceDisplay">⭐ 9999</div>
 
-        <div class="cases-grid" id="casesGrid">
+        <div class="cases-grid">
             <button class="case-btn free" onclick="openCase('free')">
                 <img src="https://i.postimg.cc/mcy5QhDb/lv-0-20260901164904.png" alt="Бесплатный" class="case-img">
-                <span class="case-name">Бесплатный</span>
+                Бесплатный
                 <span class="price">0 ⭐</span>
             </button>
             <button class="case-btn common" onclick="openCase('common')">
                 <img src="https://i.postimg.cc/XZkzwXJ4/lv-0-20260901165128.png" alt="Обычный" class="case-img">
-                <span class="case-name">Обычный</span>
+                Обычный
                 <span class="price">50 ⭐</span>
             </button>
             <button class="case-btn medium" onclick="openCase('medium')">
                 <img src="https://i.postimg.cc/wtQGh3vp/lv-0-20260901165154.png" alt="Средний" class="case-img">
-                <span class="case-name">Средний</span>
+                Средний
                 <span class="price">100 ⭐</span>
             </button>
             <button class="case-btn lux" onclick="openCase('lux')">
                 <img src="https://i.postimg.cc/Nykz1LMv/lv-0-20260901165216.png" alt="Люкс" class="case-img">
-                <span class="case-name">Люкс</span>
+                Люкс
                 <span class="price">250 ⭐</span>
             </button>
             <button class="case-btn legendary" onclick="openCase('legendary')">
                 <img src="https://i.postimg.cc/p9J6Dydw/lv-0-20260901165243.png" alt="Легендарный" class="case-img">
-                <span class="case-name">Легендарный</span>
+                Легендарный
                 <span class="price">750 ⭐</span>
             </button>
             <button class="case-btn emerald" onclick="openCase('emerald')">
                 <img src="https://i.postimg.cc/p9J6Dyd3/lv-0-20260901165304.png" alt="Изумруд" class="case-img">
-                <span class="case-name">Изумруд</span>
+                Изумруд
                 <span class="price">1500 ⭐</span>
             </button>
         </div>
@@ -481,25 +310,12 @@
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        // ===== ЗВЁЗДЫ НА ФОНЕ =====
-        const bg = document.getElementById('bgStars');
-        for (let i = 0; i < 80; i++) {
-            const span = document.createElement('span');
-            span.style.left = Math.random() * 100 + '%';
-            span.style.animationDelay = Math.random() * 6 + 's';
-            span.style.animationDuration = 4 + Math.random() * 4 + 's';
-            bg.appendChild(span);
-        }
-
-        // ===== TG =====
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // ===== ПЕРЕМЕННЫЕ =====
         let balance = 9999;
         let isOpening = false;
 
-        // ===== ВСЕ NFT КАРТИНКИ =====
         const nftImages = {
             'NFT 500⭐': [
                 'https://i.postimg.cc/wtpryD6H/lv-0-20260901165509.png',
@@ -530,10 +346,9 @@
             ]
         };
 
-        // ===== КЕЙСЫ =====
         const CASES = {
             free: {
-                name: '🎁 Бесплатный',
+                name: 'Бесплатный',
                 price: 0,
                 realItems: [
                     { name: '🍀 Попробуй снова', weight: 60 },
@@ -543,7 +358,7 @@
                 displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3']
             },
             common: {
-                name: '🔵 Обычный',
+                name: 'Обычный',
                 price: 50,
                 realItems: [
                     { name: '🖼️ NFT 500⭐', weight: 2 },
@@ -555,7 +370,7 @@
                 displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3']
             },
             medium: {
-                name: '🟣 Средний',
+                name: 'Средний',
                 price: 100,
                 realItems: [
                     { name: '🖼️ NFT 500⭐', weight: 2 },
@@ -568,7 +383,7 @@
                 displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
             },
             lux: {
-                name: '💎 Люкс',
+                name: 'Люкс',
                 price: 250,
                 realItems: [
                     { name: '🖼️ NFT 500⭐', weight: 3 },
@@ -582,9 +397,251 @@
                 displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
             },
             legendary: {
-                name: '🔥 Легендарный',
+                name: 'Легендарный',
                 price: 750,
                 realItems: [
                     { name: '🖼️ NFT 500⭐', weight: 20 },
                     { name: '🖼️ NFT 800⭐', weight: 15 },
-                  
+                    { name: '🖼️ NFT 1000⭐', weight: 10 },
+                    { name: '🖼️ NFT 1500⭐', weight: 5 },
+                    { name: '🎁 Подарок', weight: 25 },
+                    { name: '⭐ 50 звёзд', weight: 15 },
+                    { name: '🍀 Попробуй снова', weight: 10 },
+                ],
+                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
+            },
+            emerald: {
+                name: 'Изумруд',
+                price: 1500,
+                realItems: [
+                    { name: '🖼️ NFT 500⭐', weight: 15 },
+                    { name: '🖼️ NFT 800⭐', weight: 12 },
+                    { name: '🖼️ NFT 1000⭐', weight: 10 },
+                    { name: '🖼️ NFT 1500⭐', weight: 8 },
+                    { name: '🖼️ NFT 2000⭐', weight: 5 },
+                    { name: '🖼️ NFT 2500⭐', weight: 3 },
+                    { name: '🎁 Подарок', weight: 20 },
+                    { name: '⭐ 100 звёзд', weight: 12 },
+                    { name: '🍀 Попробуй снова', weight: 15 },
+                ],
+                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
+            }
+        };
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function updateBalance() {
+            document.getElementById('balanceDisplay').textContent = '⭐ ' + balance;
+        }
+
+        function getRandomRealItem(caseKey) {
+            const items = CASES[caseKey].realItems;
+            const total = items.reduce((s, i) => s + i.weight, 0);
+            let r = Math.random() * total;
+            for (const item of items) {
+                r -= item.weight;
+                if (r <= 0) return item;
+            }
+            return items[0];
+        }
+
+        function getNFTImage(name) {
+            const key = name.includes('500') ? 'NFT 500⭐' :
+                name.includes('800') ? 'NFT 800⭐' :
+                name.includes('1000') ? 'NFT 1000⭐' :
+                name.includes('1500') ? 'NFT 1500⭐' :
+                name.includes('2000') ? 'NFT 2000⭐' :
+                name.includes('2500') ? 'NFT 2500⭐' : null;
+            if (key && nftImages[key]) {
+                const images = nftImages[key];
+                return images[Math.floor(Math.random() * images.length)];
+            }
+            return null;
+        }
+
+        function openCase(caseKey) {
+            if (isOpening) {
+                showToast('⏳ Подожди, кейс уже открывается...');
+                return;
+            }
+
+            const caseData = CASES[caseKey];
+            if (!caseData) {
+                showToast('❌ Ошибка: кейс не найден');
+                return;
+            }
+
+            if (caseData.price > balance && caseKey !== 'free') {
+                showToast('❌ Недостаточно звёзд!');
+                return;
+            }
+
+            const modal = document.getElementById('caseModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalItems = document.getElementById('modalItems');
+            const modalResult = document.getElementById('modalResult');
+            const openBtn = document.getElementById('openCaseBtn');
+
+            modalTitle.textContent = '📦 ' + caseData.name;
+
+            const allItems = [];
+            caseData.displayItems.forEach(name => {
+                allItems.push({ name, type: 'display' });
+            });
+            const realNames = [];
+            caseData.realItems.forEach(item => {
+                if (!realNames.includes(item.name)) {
+                    realNames.push(item.name);
+                    allItems.push({ name: item.name, type: 'real' });
+                }
+            });
+            allItems.sort(() => Math.random() - 0.5);
+
+            modalItems.innerHTML = allItems.map(item => {
+                let icon = '🖼️';
+                if (item.name.includes('Подарок')) icon = '🎁';
+                else if (item.name.includes('звезд')) icon = '⭐';
+                else if (item.name.includes('Попробуй')) icon = '🍀';
+
+                if (item.name.includes('NFT')) {
+                    const img = getNFTImage(item.name);
+                    if (img) {
+                        return `
+                            <div class="modal-item" data-type="${item.type}">
+                                <img src="${img}" alt="${item.name}">
+                                ${item.name}
+                            </div>
+                        `;
+                    }
+                }
+                return `
+                    <div class="modal-item" data-type="${item.type}">
+                        <span style="font-size:34px;display:block;">${icon}</span>
+                        ${item.name}
+                    </div>
+                `;
+            }).join('');
+
+            modalResult.textContent = '🎰 Нажми "Открыть"';
+            modalResult.className = 'modal-result';
+            modal.classList.add('active');
+
+            const closeModal = () => {
+                modal.classList.remove('active');
+                isOpening = false;
+                openBtn.disabled = false;
+                openBtn.textContent = '🔑 Открыть';
+            };
+
+            document.getElementById('closeModalBtn').onclick = closeModal;
+            modal.onclick = function(e) {
+                if (e.target === this) closeModal();
+            };
+
+            openBtn.onclick = function() {
+                if (isOpening) return;
+                isOpening = true;
+                openBtn.disabled = true;
+                openBtn.textContent = '⏳ Открываем...';
+
+                if (caseKey !== 'free') {
+                    balance -= caseData.price;
+                    updateBalance();
+                }
+
+                const items = modalItems.querySelectorAll('.modal-item');
+                const allImages = Object.values(nftImages).flat();
+                let spins = 0;
+                const maxSpins = 20 + Math.floor(Math.random() * 10);
+                const spinInterval = setInterval(() => {
+                    items.forEach(el => {
+                        const imgEl = el.querySelector('img');
+                        if (imgEl) {
+                            const randomImg = allImages[Math.floor(Math.random() * allImages.length)];
+                            el.innerHTML = `
+                                <img src="${randomImg}" alt="NFT">
+                                NFT ???
+                            `;
+                        } else {
+                            const icons = ['🖼️', '🎁', '⭐', '🍀', '💎', '🔥'];
+                            const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                            el.innerHTML = `
+                                <span style="font-size:34px;display:block;">${randomIcon}</span>
+                                Приз ???
+                            `;
+                        }
+                    });
+                    spins++;
+                    if (spins >= maxSpins) {
+                        clearInterval(spinInterval);
+                        const prize = getRandomRealItem(caseKey);
+                        const isNFT = prize.name.includes('NFT');
+
+                        items.forEach(el => {
+                            const imgEl = el.querySelector('img');
+                            if (isNFT) {
+                                const img = getNFTImage(prize.name);
+                                if (img) {
+                                    el.innerHTML = `
+                                        <img src="${img}" alt="${prize.name}">
+                                        ${prize.name}
+                                    `;
+                                }
+                            } else {
+                                const icon = prize.name.includes('Подарок') ? '🎁' :
+                                    prize.name.includes('звезд') ? '⭐' : '🍀';
+                                el.innerHTML = `
+                                    <span style="font-size:34px;display:block;">${icon}</span>
+                                    ${prize.name}
+                                `;
+                            }
+                        });
+
+                        const randomIdx = Math.floor(Math.random() * items.length);
+                        if (items[randomIdx]) {
+                            items[randomIdx].classList.add('highlight');
+                        }
+
+                        modalResult.textContent = `🎉 Выпало: ${prize.name}`;
+                        modalResult.className = 'modal-result win';
+
+                        if (isNFT) {
+                            const priceMatch = prize.name.match(/(\d+)/);
+                            const price = priceMatch ? parseInt(priceMatch[0]) : 0;
+                            if (price >= 1500) {
+                                showToast(`👑 Легендарный выигрыш! ${prize.name}!`);
+                            } else {
+                                showToast(`🖼️ Выиграл ${prize.name}!`);
+                            }
+                        } else if (prize.name === '🍀 Попробуй снова') {
+                            modalResult.textContent = '😔 Попробуй снова';
+                            modalResult.className = 'modal-result lose';
+                        } else if (prize.name.includes('⭐')) {
+                            const stars = parseInt(prize.name.match(/(\d+)/)?.[0] || 0);
+                            if (stars > 0 && caseKey !== 'free') {
+                                balance += stars;
+                                updateBalance();
+                                showToast(`⭐ +${stars} звёзд!`);
+                            }
+                        }
+
+                        isOpening = false;
+                        openBtn.disabled = false;
+                        openBtn.textContent = '🔑 Открыть ещё';
+                    }
+                }, 80);
+            };
+        }
+
+        updateBalance();
+        console.log('🎰 SollyGIFT загружен!');
+        console.log('✅ Нажми на любой кейс, чтобы открыть');
+</script>
+</body>
+</html>
