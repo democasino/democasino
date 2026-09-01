@@ -222,6 +222,14 @@
             display: block;
             margin-bottom: 4px;
         }
+        .modal-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto 4px;
+            border-radius: 8px;
+        }
         .modal-item .nft-tag {
             font-size: 9px;
             color: #ff6b6b;
@@ -489,64 +497,66 @@
 
         // ===== ПЕРЕМЕННЫЕ =====
         let balance = 9999;
-        let currentCase = null;
         let isOpening = false;
+
+        // ===== ВСЕ NFT КАРТИНКИ =====
+        const nftImages = {
+            'NFT 500⭐': [
+                'https://i.postimg.cc/wtpryD6H/lv-0-20260901165509.png',
+                'https://i.postimg.cc/GBx5k9pN/lv-0-20260901165353.png',
+                'https://i.postimg.cc/d7jx8D0x/lv-0-20260901165431.png',
+                'https://i.postimg.cc/qtTFh2kd/lv-0-20260901165543.png'
+            ],
+            'NFT 800⭐': [
+                'https://i.postimg.cc/5HVrY8xc/lv-0-20260901165614.png',
+                'https://i.postimg.cc/kVmH6W7L/lv-0-20260901165640.png',
+                'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png'
+            ],
+            'NFT 1000⭐': [
+                'https://i.postimg.cc/zLrQbTqc/lv-0-20260901165705.png',
+                'https://i.postimg.cc/d7YfkGJH/lv-0-20260901165723.png',
+                'https://i.postimg.cc/Y4HPGQtf/lv-0-20260901165742.png'
+            ],
+            'NFT 1500⭐': [
+                'https://i.postimg.cc/cvYjLFGX/lv-0-20260901165802.png',
+                'https://i.postimg.cc/Ty6sLnTm/lv-0-20260901165822.png'
+            ],
+            'NFT 2000⭐': [
+                'https://i.postimg.cc/Ff46d0hG/lv-0-20260901165949.png',
+                'https://i.postimg.cc/PCZc5Sny/lv-0-20260901170008.png'
+            ],
+            'NFT 2500⭐': [
+                'https://i.postimg.cc/bZbMwmfT/lv-0-20260901170044.png'
+            ]
+        };
 
         // ===== КЕЙСЫ =====
         const CASES = {
             free: {
                 name: '🎁 Бесплатный',
                 price: 0,
-                items: [
-                    { name: '🖼️ Mirage #1', type: 'display' },
-                    { name: '🖼️ Mirage #2', type: 'display' },
-                    { name: '🖼️ Mirage #3', type: 'display' },
-                    { name: '🍀 Попробуй снова', type: 'real', weight: 60 },
-                    { name: '⭐ 1 звезда', type: 'real', weight: 25 },
-                    { name: '🎁 Подарок', type: 'real', weight: 15 },
-                ],
                 realItems: [
                     { name: '🍀 Попробуй снова', weight: 60 },
                     { name: '⭐ 1 звезда', weight: 25 },
                     { name: '🎁 Подарок', weight: 15 },
-                ]
+                ],
+                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3']
             },
             common: {
                 name: '🔵 Обычный',
                 price: 50,
-                items: [
-                    { name: '🖼️ Mirage #1', type: 'display' },
-                    { name: '🖼️ Mirage #2', type: 'display' },
-                    { name: '🖼️ Mirage #3', type: 'display' },
-                    { name: '🖼️ NFT 500⭐', type: 'real', weight: 2 },
-                    { name: '🖼️ NFT 500⭐', type: 'real', weight: 2 },
-                    { name: '🎁 Подарок', type: 'real', weight: 40 },
-                    { name: '⭐ 5 звёзд', type: 'real', weight: 30 },
-                    { name: '🍀 Попробуй снова', type: 'real', weight: 26 },
-                ],
                 realItems: [
                     { name: '🖼️ NFT 500⭐', weight: 2 },
                     { name: '🖼️ NFT 500⭐', weight: 2 },
                     { name: '🎁 Подарок', weight: 40 },
                     { name: '⭐ 5 звёзд', weight: 30 },
                     { name: '🍀 Попробуй снова', weight: 26 },
-                ]
+                ],
+                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3']
             },
             medium: {
                 name: '🟣 Средний',
                 price: 100,
-                items: [
-                    { name: '🖼️ Mirage #1', type: 'display' },
-                    { name: '🖼️ Mirage #2', type: 'display' },
-                    { name: '🖼️ Mirage #3', type: 'display' },
-                    { name: '🖼️ Mirage #4', type: 'display' },
-                    { name: '🖼️ NFT 500⭐', type: 'real', weight: 2 },
-                    { name: '🖼️ NFT 800⭐', type: 'real', weight: 2 },
-                    { name: '🖼️ NFT 800⭐', type: 'real', weight: 2 },
-                    { name: '🎁 Подарок', type: 'real', weight: 35 },
-                    { name: '⭐ 10 звёзд', type: 'real', weight: 25 },
-                    { name: '🍀 Попробуй снова', type: 'real', weight: 34 },
-                ],
                 realItems: [
                     { name: '🖼️ NFT 500⭐', weight: 2 },
                     { name: '🖼️ NFT 800⭐', weight: 2 },
@@ -554,25 +564,28 @@
                     { name: '🎁 Подарок', weight: 35 },
                     { name: '⭐ 10 звёзд', weight: 25 },
                     { name: '🍀 Попробуй снова', weight: 34 },
-                ]
+                ],
+                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
             },
             lux: {
                 name: '💎 Люкс',
                 price: 250,
-                items: [
-                    { name: '🖼️ Mirage #1', type: 'display' },
-                    { name: '🖼️ Mirage #2', type: 'display' },
-                    { name: '🖼️ Mirage #3', type: 'display' },
-                    { name: '🖼️ Mirage #4', type: 'display' },
-                    { name: '🖼️ NFT 500⭐', type: 'real', weight: 3 },
-                    { name: '🖼️ NFT 800⭐', type: 'real', weight: 3 },
-                    { name: '🖼️ NFT 1000⭐', type: 'real', weight: 3 },
-                    { name: '🖼️ NFT 1000⭐', type: 'real', weight: 3 },
-                    { name: '🎁 Подарок', type: 'real', weight: 30 },
-                    { name: '⭐ 25 звёзд', type: 'real', weight: 20 },
-                    { name: '🍀 Попробуй снова', type: 'real', weight: 38 },
-                ],
                 realItems: [
                     { name: '🖼️ NFT 500⭐', weight: 3 },
                     { name: '🖼️ NFT 800⭐', weight: 3 },
-                    { na
+                    { name: '🖼️ NFT 1000⭐', weight: 3 },
+                    { name: '🖼️ NFT 1000⭐', weight: 3 },
+                    { name: '🎁 Подарок', weight: 30 },
+                    { name: '⭐ 25 звёзд', weight: 20 },
+                    { name: '🍀 Попробуй снова', weight: 38 },
+                ],
+                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
+            },
+            legendary: {
+                name: '🔥 Легендарный',
+                price: 750,
+                realItems: [
+                    { name: '🖼️ NFT 500⭐', weight: 20 },
+                    { name: '🖼️ NFT 800⭐', weight: 15 },
+                    { name: '🖼️ NFT 1000⭐', weight: 10 },
+                   
