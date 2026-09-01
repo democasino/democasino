@@ -421,7 +421,7 @@
                     renderReel(reel3, r3);
                     total++;
                     
-                    // Сохраняем лучший приз
+                    // Сохраняем лучший приз (даже при проигрыше)
                     if (r1.price > bestPrizePrice) {
                         bestPrizePrice = r1.price;
                         bestPrizeName = r1.name;
@@ -429,17 +429,12 @@
                         localStorage.setItem('bestPrizePrice', bestPrizePrice);
                     }
 
-                    // Проверка выигрыша
+                    // ===== ПРОВЕРКА ПОБЕДЫ (ТОЛЬКО 3 СОВПАДЕНИЯ) =====
                     if (r1.price === r2.price && r2.price === r3.price) {
                         wins++;
                         resultDiv.textContent = `🎉 ДЖЕКПОТ! Три ${r1.name}!`;
                         resultDiv.className = 'result win';
                         showToast(`🎉 Выиграл ${r1.name} (${r1.price}⭐)!`, 3000);
-                    } else if (r1.price === r2.price || r2.price === r3.price || r1.price === r3.price) {
-                        wins++;
-                        resultDiv.textContent = `🔔 Два ${r1.name} совпали! Почти выиграл!`;
-                        resultDiv.className = 'result win';
-                        showToast(`🔔 Два ${r1.name} (${r1.price}⭐)!`, 2000);
                     } else {
                         resultDiv.textContent = `😔 Ничего не совпало. Попробуй ещё!`;
                         resultDiv.className = 'result lose';
