@@ -99,6 +99,7 @@
             font-weight: bold;
             cursor: pointer;
             text-align: center;
+            transition: transform 0.1s;
         }
         .case-btn:active {
             transform: scale(0.95);
@@ -155,19 +156,23 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
         }
         .modal-overlay.active {
             display: flex;
         }
         .modal {
             background: linear-gradient(145deg, #1a0a2e, #2d1b4e);
-            border-radius: 30px;
-            padding: 35px 25px;
-            max-width: 440px;
+            border-radius: 25px;
+            padding: 20px 15px;
+            max-width: 400px;
             width: 100%;
             border: 1px solid rgba(255, 215, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
             animation: modalIn 0.3s ease;
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
         }
         @keyframes modalIn {
             from {
@@ -181,36 +186,47 @@
         }
         .modal-title {
             text-align: center;
-            font-size: 24px;
+            font-size: 20px;
             color: #ffd93d;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            flex-shrink: 0;
         }
         .modal-items {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-            padding: 12px;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 10px;
             background: rgba(0, 0, 0, 0.2);
             border-radius: 15px;
-            min-height: 120px;
+            min-height: 100px;
+            flex-shrink: 0;
         }
         .modal-item {
             text-align: center;
-            padding: 12px 4px;
+            padding: 8px 2px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.04);
-            font-size: 12px;
+            font-size: 10px;
             color: #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .modal-item img {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
             display: block;
             margin: 0 auto 4px;
-            border-radius: 8px;
+            border-radius: 6px;
+        }
+        .modal-item .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 2px;
         }
         .modal-item.highlight {
             border-color: #ffd93d;
@@ -219,50 +235,98 @@
         }
         .modal-result {
             text-align: center;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            min-height: 60px;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            min-height: 50px;
             border: 1px solid rgba(255, 215, 0, 0.08);
             background: rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-word;
         }
         .modal-result.win {
             color: #ffd93d;
             border-color: rgba(255, 215, 0, 0.25);
+            background: rgba(255, 215, 0, 0.05);
+            animation: resultWin 0.6s ease;
+        }
+        @keyframes resultWin {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         .modal-result.lose {
             color: #ff6b6b;
             border-color: rgba(255, 0, 0, 0.1);
         }
+        .modal-result.legendary-win {
+            color: #ffd700;
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.12);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.15);
+            animation: legendaryWin 0.8s ease;
+        }
+        @keyframes legendaryWin {
+            0% {
+                transform: scale(0.5) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(3deg);
+            }
+            100% {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
         .modal-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             border: none;
             border-radius: 15px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             background: linear-gradient(45deg, #ffd93d, #f7971e);
             color: #1a0030;
+            flex-shrink: 0;
+            transition: transform 0.1s;
         }
         .modal-btn:active {
             transform: scale(0.95);
         }
         .modal-btn:disabled {
             opacity: 0.5;
+            cursor: not-allowed;
         }
         .modal-close-btn {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: 2px solid rgba(255, 255, 255, 0.06);
             border-radius: 15px;
             background: transparent;
             color: #888;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
-            margin-top: 12px;
+            margin-top: 10px;
+            flex-shrink: 0;
+            transition: transform 0.1s;
+        }
+        .modal-close-btn:active {
+            transform: scale(0.95);
         }
         .toast {
             position: fixed;
@@ -525,7 +589,7 @@
             }
         }
 
-        // ===== NFT КАРТИНКИ (ПРАВИЛЬНЫЕ ЦЕНЫ) =====
+        // ===== NFT КАРТИНКИ =====
         const nftImages = {
             'NFT 500⭐': [
                 'https://i.postimg.cc/wtpryD6H/lv-0-20260901165509.png',
@@ -556,7 +620,7 @@
             ]
         };
 
-        // ===== КЕЙСЫ (С ПРАВИЛЬНЫМИ ЦЕНАМИ) =====
+        // ===== КЕЙСЫ =====
         const CASES = {
             free: {
                 name: 'Бесплатный',
@@ -672,7 +736,6 @@
             return null;
         }
 
-        // ===== ОСНОВНАЯ ФУНКЦИЯ ОТКРЫТИЯ КЕЙСА =====
         function openCase(caseKey) {
             if (isOpening) {
                 showToast('⏳ Подожди, кейс уже открывается...');
