@@ -589,7 +589,7 @@
             }
         }
 
-        // ===== ВСЕ NFT КАРТИНКИ (ПО ЦЕНАМ) =====
+        // ===== ВСЕ NFT (ПРЯМЫЕ ССЫЛКИ, ПРИВЯЗАННЫЕ К ЦЕНАМ) =====
         const nftImages = {
             'NFT 500⭐': [
                 'https://i.postimg.cc/wtpryD6H/lv-0-20260901165509.png',
@@ -599,13 +599,13 @@
             ],
             'NFT 800⭐': [
                 'https://i.postimg.cc/5HVrY8xc/lv-0-20260901165614.png',
-                'https://i.postimg.cc/kVmH6W7L/lv-0-20260901165640.png',
+                'https://i.postimg.cc/kVmH6W7L/lv-0-20260901165746.png',
                 'https://i.postimg.cc/214qDKCK/lv-0-20260831161303.png'
             ],
             'NFT 1000⭐': [
                 'https://i.postimg.cc/zLrQbTqc/lv-0-20260901165705.png',
-                'https://i.postimg.cc/d7YfkGJH/lv-0-20260901165723.png',
-                'https://i.postimg.cc/Y4HPGQtf/lv-0-20260901165742.png'
+                'https://i.postimg.cc/d7YfkGJH/lv-0-20260901165924.png',
+                'https://i.postimg.cc/Y4HPGQtf/lv-0-20260901170007.png'
             ],
             'NFT 1500⭐': [
                 'https://i.postimg.cc/cvYjLFGX/lv-0-20260901165802.png',
@@ -620,7 +620,7 @@
             ]
         };
 
-        // ===== КЕЙСЫ (ПРАВИЛЬНЫЕ ЦЕНЫ) =====
+        // ===== КЕЙСЫ (ПРАВИЛЬНЫЕ ЦЕНЫ, ФЕЙКОВЫЕ NFT БЕЗ ПОМЕТОК) =====
         const CASES = {
             free: {
                 name: 'Бесплатный',
@@ -630,7 +630,12 @@
                     { name: '⭐ 1 звезда', weight: 25 },
                     { name: '🎁 Подарок', weight: 15 },
                 ],
-                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3']
+                // Фейковые NFT выглядят как настоящие (без пометок)
+                displayItems: [
+                    '🖼️ NFT (500⭐)',
+                    '🖼️ NFT (800⭐)',
+                    '🖼️ NFT (1000⭐)'
+                ]
             },
             common: {
                 name: 'Обычный',
@@ -642,7 +647,7 @@
                     { name: '⭐ 5 звёзд', weight: 30 },
                     { name: '⭐ 3 звезды', weight: 26 },
                 ],
-                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3']
+                displayItems: []
             },
             medium: {
                 name: 'Средний',
@@ -655,7 +660,7 @@
                     { name: '⭐ 10 звёзд', weight: 25 },
                     { name: '⭐ 7 звёзд', weight: 34 },
                 ],
-                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
+                displayItems: []
             },
             lux: {
                 name: 'Люкс',
@@ -669,12 +674,11 @@
                     { name: '⭐ 25 звёзд', weight: 20 },
                     { name: '⭐ 15 звёзд', weight: 38 },
                 ],
-                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
+                displayItems: []
             },
             legendary: {
                 name: 'Легендарный',
                 price: 750,
-                // ===== ТОЛЬКО 500, 800, 1000, 1500⭐ =====
                 realItems: [
                     { name: '🖼️ NFT (500⭐)', weight: 20 },
                     { name: '🖼️ NFT (800⭐)', weight: 15 },
@@ -684,19 +688,18 @@
                     { name: '⭐ 50 звёзд', weight: 15 },
                     { name: '⭐ 30 звёзд', weight: 10 },
                 ],
-                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
+                displayItems: []
             },
             emerald: {
                 name: 'Изумруд',
                 price: 1500,
-                // ===== ТОЛЬКО 1000, 1500, 2000, 2500⭐ =====
                 realItems: [
                     { name: '🖼️ NFT (1000⭐)', weight: 15 },
                     { name: '🖼️ NFT (1500⭐)', weight: 12 },
                     { name: '🖼️ NFT (2000⭐)', weight: 10 },
                     { name: '🖼️ NFT (2500⭐)', weight: 8 },
                 ],
-                displayItems: ['🖼️ Mirage #1', '🖼️ Mirage #2', '🖼️ Mirage #3', '🖼️ Mirage #4']
+                displayItems: []
             }
         };
 
@@ -764,9 +767,13 @@
             modalTitle.textContent = '📦 ' + caseData.name;
 
             const allItems = [];
-            caseData.displayItems.forEach(name => {
-                allItems.push({ name, type: 'display' });
-            });
+            
+            if (caseData.displayItems && caseData.displayItems.length > 0) {
+                caseData.displayItems.forEach(name => {
+                    allItems.push({ name, type: 'display' });
+                });
+            }
+            
             const realNames = [];
             caseData.realItems.forEach(item => {
                 if (!realNames.includes(item.name)) {
